@@ -1,0 +1,24 @@
+# Node modules
+node_modules/
+
+# Entorno y variables sensibles
+.env
+.env.local
+
+# Salidas de producción de Angular/Ionic
+dist/
+www/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Directorios del IDE
+.vscode/
+.idea/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
