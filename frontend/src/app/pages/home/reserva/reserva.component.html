@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Reserva de Mesa</h2>
+
+  <form [formGroup]="formReserva" (ngSubmit)="reservar()">
+
+    <!-- Selección de mesa -->
+    <div class="mb-3">
+      <label for="mesa" class="form-label">Mesa</label>
+      <select class="form-select" formControlName="mesa" id="mesa">
+        <option value="" disabled selected>Selecciona una mesa</option>
+        <option *ngFor="let mesa of mesas" [value]="mesa._id">
+          Mesa N° {{ mesa.numero }} - {{ mesa.sector }}
+        </option>
+      </select>
+      <div class="text-danger" *ngIf="formReserva.get('mesa')?.touched && formReserva.get('mesa')?.invalid">
+        ⚠️ Campo requerido
+      </div>
+    </div>
+
+    <!-- Fecha -->
+    <div class="mb-3">
+      <label for="fecha_reserva" class="form-label">Fecha y hora</label>
+      <input type="datetime-local" class="form-control" formControlName="fecha_reserva" id="fecha_reserva">
+      <div class="text-danger" *ngIf="formReserva.get('fecha_reserva')?.touched && formReserva.get('fecha_reserva')?.invalid">
+        ⚠️ Fecha obligatoria
+      </div>
+    </div>
+
+    <!-- Duración -->
+    <div class="mb-3">
+      <label for="duracion" class="form-label">Duración (minutos)</label>
+      <input type="number" class="form-control" formControlName="duracion" id="duracion" min="30">
+      <div class="text-danger" *ngIf="formReserva.get('duracion')?.touched && formReserva.get('duracion')?.invalid">
+        ⚠️ Mínimo 30 minutos
+      </div>
+    </div>
+
+    <!-- Detalles de entrega -->
+    <div class="mb-3">
+      <label class="form-label">Entregas programadas (opcional)</label>
+      <div formArrayName="detalle_entrega">
+        <div *ngFor="let detalle of detalleEntrega.controls; let i = index" [formGroupName]="i" class="mb-2 row">
+          <div class="col-md-6">
+            <input class="form-control" type="text" placeholder="Descripción" formControlName="descripcion">
+          </div>
+          <div class="col-md-4">
+            <input class="form-control" type="number" placeholder="Tiempo (min)" formControlName="tiempo">
+          </div>
+          <div class="col-md-2 d-flex justify-content-end">
+            <button type="button" class="btn btn-danger" (click)="eliminarDetalle(i)">✖</button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary mt-2" (click)="agregarDetalle()">➕ Agregar entrega</button>
+    </div>
+
+    <button class="btn btn-primary w-100 mt-4" type="submit">Confirmar Reserva</button>
+  </form>
+</div>

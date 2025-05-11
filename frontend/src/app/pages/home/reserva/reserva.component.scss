@@ -1,0 +1,67 @@
+:host {
+  display: block;
+  background-color: #121212;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+}
+
+h2 {
+  font-weight: bold;
+  color: #343a40;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+input, select {
+  font-size: 0.95rem;
+}
+
+.text-danger {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+button {
+  border-radius: 0.5rem;
+}
+
+.btn-danger {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+.btn-secondary {
+  font-size: 0.9rem;
+  background-color: #6c757d;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+}
+
+.row > div {
+  margin-bottom: 0.5rem;
+}

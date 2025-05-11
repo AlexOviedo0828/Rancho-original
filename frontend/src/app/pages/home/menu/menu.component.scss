@@ -1,0 +1,148 @@
+.banner {
+  background: linear-gradient(90deg, #fc4a1a, #f7b733);
+  color: #fff;
+  border-radius: 0 0 10px 10px;
+}
+
+.card {
+  border-radius: 10px;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.card-title {
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 0.9rem;
+}
+
+.carrito-panel {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 360px;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 1100;
+  border-radius: 12px;
+  background-color: #fefefe;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  color: #212529;
+}
+
+.carrito-panel h5 {
+  font-weight: bold;
+  color: #c0392b;
+  margin-bottom: 20px;
+}
+
+.carrito-panel p,
+.carrito-panel label {
+  color: #212529;
+}
+
+.carrito-panel .producto-item {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.carrito-panel .producto-item strong {
+  color: #2c3e50;
+}
+
+.carrito-panel .subtotal {
+  color: #555;
+  font-weight: 500;
+}
+
+.carrito-panel .btn {
+  font-size: 0.85rem;
+}
+
+.list-group-item {
+  background-color: #ffffff;
+  border: none;
+  margin-bottom: 4px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.btn-outline-danger,
+.btn-outline-success {
+  font-weight: bold;
+}
+
+.bg-dark {
+  background-color: #1e1e2f !important;
+}
+
+.btn-outline-warning {
+  border-color: #ffc107;
+  color: #ffc107;
+
+  &:hover {
+    background-color: #ffc107;
+    color: #212529;
+  }
+}
+
+.badge.bg-danger {
+  font-size: 0.8rem;
+  padding: 4px 6px;
+}
+
+select.form-select,
+input.form-control {
+  font-size: 0.9rem;
+  padding: 6px 10px;
+}
+
+.text-success {
+  color: #28a745 !important;
+}
+
+hr {
+  border-color: #dee2e6;
+}
+/* carousel.scss */
+.carousel-item {
+  height: 400px;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    filter: brightness(70%);
+  }
+}
+
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  bottom: 20%;
+  h2 {
+    font-size: 2.2rem;
+    font-weight: bold;
+  }
+  p {
+    font-size: 1.2rem;
+  }
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #000;
+  border-radius: 50%;
+  padding: 1rem;
+}

@@ -1,0 +1,47 @@
+:host {
+  display: block;
+  background: #fff8f0;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.ranch-title {
+  font-weight: bold;
+  color: #7b3f00;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e0c097;
+  border-radius: 12px;
+}
+
+ul {
+  padding-left: 1.2rem;
+  li {
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+  }
+}
+
+p {
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+}
+
+h5, h6 {
+  margin-top: 1rem;
+  color: #543d28;
+  font-weight: bold;
+}
+
+button.btn-secondary {
+  background-color: #a57946;
+  border-color: #7b3f00;
+  color: white;
+  &:hover {
+    background-color: #7b3f00;
+  }
+}

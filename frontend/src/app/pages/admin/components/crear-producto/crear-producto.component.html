@@ -1,0 +1,40 @@
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Crear Producto</h2>
+
+  <form [formGroup]="productoForm" (ngSubmit)="guardarProducto()" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" class="form-control" formControlName="nombre" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" class="form-control" formControlName="descripcion" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="precio">Precio</label>
+      <input type="number" id="precio" class="form-control" formControlName="precio" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="categoria">Categoría</label>
+      <input type="text" id="categoria" class="form-control" formControlName="categoria" required>
+    </div>
+
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" formControlName="activo" id="activo">
+      <label class="form-check-label" for="activo">Activo</label>
+    </div>
+
+    <div class="mb-3">
+      <label for="imagen">Imagen del producto</label>
+      <input type="file" id="imagen" class="form-control" (change)="seleccionarImagen($event)">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="router.navigate(['/admin/listar-productos'])">
+      Cancelar
+    </button>
+  </form>
+</div>

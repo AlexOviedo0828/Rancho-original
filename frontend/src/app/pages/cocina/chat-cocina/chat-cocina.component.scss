@@ -1,0 +1,70 @@
+/* CONTENEDOR PRINCIPAL */
+.chat-dashboard {
+  background: #f2f4f8;
+}
+
+/* LISTA DE HILOS */
+.hilo-list {
+  max-height: 70vh;
+  overflow-y: auto;
+
+  li {
+    cursor: pointer;
+
+    &.active {
+      background: #198754;
+      color: #fff;
+
+      .text-muted {
+        color: #e2e3e5 !important;
+      }
+    }
+    &:hover:not(.active) {
+      background: #f1f1f1;
+    }
+  }
+}
+
+/* CUADRO DE CHAT */
+.chat-box {
+  overflow-y: auto;
+  background: #fafafa;
+  border-top: 1px solid #dee2e6;
+}
+
+/* BURBUJAS */
+.bubble {
+  display: inline-block;
+  padding: .55rem .9rem;
+  border-radius: 16px;
+  max-width: 80%;
+  word-wrap: break-word;
+  position: relative;
+  font-size: .95rem;
+}
+
+.bubble-cocina {
+  background: #d1f5d3;
+  color: #155724;
+  margin-left: auto;
+}
+
+.bubble-usuario {
+  background: #d4e8ff;
+  color: #003366;
+  margin-right: auto;
+}
+
+/* TIMESTAMP */
+.timestamp {
+  font-size: .75rem;
+  color: #666;
+  margin-top: .25rem;
+  text-align: right;
+}
+
+/* TABLA DE PEDIDOS */
+table {
+  th, td { white-space: nowrap; }
+  tbody tr:hover { background: #f7f7f7; }
+}

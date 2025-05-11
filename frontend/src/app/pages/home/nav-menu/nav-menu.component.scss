@@ -1,0 +1,9 @@
+button {
+  text-align: left;
+  border-radius: 1rem;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}

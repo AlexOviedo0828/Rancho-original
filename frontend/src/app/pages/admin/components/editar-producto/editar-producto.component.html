@@ -1,0 +1,39 @@
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Editar Producto</h2>
+
+  <form [formGroup]="productoForm" (ngSubmit)="actualizarProducto()" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label>Nombre</label>
+      <input type="text" class="form-control" formControlName="nombre">
+    </div>
+
+    <div class="mb-3">
+      <label>Descripción</label>
+      <textarea class="form-control" formControlName="descripcion"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label>Precio</label>
+      <input type="number" class="form-control" formControlName="precio">
+    </div>
+
+    <div class="mb-3">
+      <label>Categoría</label>
+      <input type="text" class="form-control" formControlName="categoria">
+    </div>
+
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" formControlName="activo" id="activo">
+      <label class="form-check-label" for="activo">Activo</label>
+    </div>
+
+    <div class="mb-3">
+      <label>Imagen actual</label><br>
+      <img *ngIf="imagenPreview" [src]="imagenPreview" class="img-thumbnail mb-2" style="max-width: 200px;">
+      <input type="file" class="form-control" (change)="seleccionarImagen($event)">
+    </div>
+
+    <button type="submit" class="btn btn-success">Actualizar</button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="router.navigate(['/admin/listar-productos'])">Cancelar</button>
+  </form>
+</div>

@@ -1,0 +1,50 @@
+
+<div class="mb-2 text-start">
+  <button class="btn btn-outline-light" routerLink="/home">← Volver</button>
+</div>
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white fw-bold">
+      💬 Atención al cliente
+    </div>
+
+    <!-- Chat -->
+    <div class="card-body chat-box" #chatScroll style="height: 50vh; overflow-y: auto;">
+      <div *ngIf="mensajes.length === 0" class="text-muted text-center">
+        No hay mensajes todavía.
+      </div>
+
+      <ng-container *ngFor="let msg of mensajes">
+        <div [ngClass]="{ 'text-end': esMio(msg), 'text-start': !esMio(msg) }" class="mb-3">
+          <div
+            class="d-inline-block p-2 rounded"
+            [ngClass]="{
+              'bg-primary text-white': esMio(msg),
+              'bg-light text-dark': !esMio(msg)
+            }"
+            style="max-width: 70%; word-wrap: break-word;"
+          >
+            {{ msg.mensaje }}
+            <div class="text-end text-muted small">
+              {{ msg.fecha | date: 'shortTime' }}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Input -->
+    <div class="card-footer p-2">
+      <form class="input-group" (ngSubmit)="enviarMensaje()">
+        <input
+          [(ngModel)]="mensajeNuevo"
+          name="mensaje"
+          class="form-control"
+          placeholder="Escribe tu mensaje..."
+          required
+        />
+        <button class="btn btn-primary" type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="container mt-5 col-lg-6">
+  <h3 class="mb-4 text-center ranch-title">👤 Crear Usuario</h3>
+
+  <form [formGroup]="form" (ngSubmit)="crear()">
+    <div class="mb-3">
+      <label>Nombre completo</label>
+      <input type="text" class="form-control" formControlName="nombre_completo" />
+    </div>
+
+    <div class="mb-3">
+      <label>Correo</label>
+      <input type="email" class="form-control" formControlName="correo" />
+    </div>
+
+    <div class="mb-3">
+      <label>Contraseña</label>
+      <input type="password" class="form-control" formControlName="contraseña" />
+    </div>
+
+    <div class="mb-3">
+      <label>Rol</label>
+      <select class="form-select" formControlName="rol">
+        <option value="usuario">Usuario</option>
+        <option value="cocina">Cocina</option>
+        <option value="admin">Administrador</option>
+      </select>
+    </div>
+
+    <button class="btn btn-success w-100" type="submit">💾 Crear Usuario</button>
+  </form>
+</div>

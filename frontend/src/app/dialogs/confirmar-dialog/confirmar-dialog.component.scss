@@ -1,0 +1,45 @@
+::ng-deep .mat-dialog-container {
+  background: #fff;
+  border-radius: 15px;
+  padding: 30px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+::ng-deep mat-dialog-content {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+::ng-deep mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+::ng-deep button[mat-button] {
+  border-radius: 8px;
+  font-weight: bold;
+  padding: 6px 18px;
+  text-transform: none;
+}
+
+::ng-deep button[color="primary"] {
+  background-color: #28a745;
+  color: white;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
+::ng-deep button[color="warn"] {
+  background-color: #dc3545;
+  color: white;
+
+  &:hover {
+    background-color: #c82333;
+  }
+}

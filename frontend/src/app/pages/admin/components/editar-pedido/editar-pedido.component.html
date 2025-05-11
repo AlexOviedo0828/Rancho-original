@@ -1,0 +1,80 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-dark text-white text-center rounded-top">
+          <h3 class="mb-0">✏️ Editar Pedido</h3>
+        </div>
+
+        <div class="card-body bg-light">
+          <form [formGroup]="pedidoForm" (ngSubmit)="guardarCambios()" *ngIf="pedidoForm">
+
+            <!-- Estado -->
+            <div class="mb-3">
+              <label class="form-label">Estado del Pedido</label>
+              <select class="form-select" formControlName="estado">
+                <option value="pendiente">Pendiente</option>
+                <option value="en_proceso">En proceso</option>
+                <option value="en_camino">En camino</option>
+                <option value="entregado">Entregado</option>
+              </select>
+            </div>
+
+            <!-- Método de pago -->
+            <div class="mb-3">
+              <label class="form-label">Método de Pago</label>
+              <input type="text" class="form-control" formControlName="metodo_pago" placeholder="Ej: Efectivo, Transferencia..." />
+            </div>
+
+            <!-- Total -->
+            <div class="mb-3">
+              <label class="form-label">Total del Pedido ($)</label>
+              <input type="number" class="form-control" formControlName="total" />
+            </div>
+
+            <!-- Fecha -->
+            <div class="mb-3">
+              <label class="form-label">Fecha del Pedido</label>
+              <input type="datetime-local" class="form-control" formControlName="fecha" />
+            </div>
+
+            <!-- Mesa -->
+            <div class="mb-3">
+              <label class="form-label">ID de Mesa</label>
+              <input type="text" class="form-control" formControlName="mesa" />
+            </div>
+
+            <!-- Productos -->
+            <div class="mb-4 p-3 border rounded bg-white" formArrayName="productos">
+              <h5 class="mb-3 text-center">🛒 Productos del Pedido</h5>
+
+              <div *ngFor="let producto of productosForm.controls; let i = index" [formGroupName]="i" class="mb-3 border p-3 rounded shadow-sm bg-light">
+                <div class="mb-2">
+                  <label class="form-label mb-0"><strong>Producto:</strong></label>
+                  <p class="text-muted">{{ producto.get('nombre')?.value }}</p>
+                </div>
+
+                <div class="mb-2">
+                  <label class="form-label">Cantidad</label>
+                  <input type="number" class="form-control" formControlName="cantidad" />
+                </div>
+
+                <div>
+                  <label class="form-label">Precio Unitario</label>
+                  <input type="number" class="form-control" formControlName="precio_unitario" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-between">
+              <button type="submit" class="btn btn-success px-4">💾 Guardar Cambios</button>
+              <button type="button" class="btn btn-secondary" routerLink="/admin/pedidos">← Volver</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

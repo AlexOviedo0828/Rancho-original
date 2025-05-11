@@ -1,0 +1,83 @@
+<!-- BOTÓN VOLVER -->
+<div class="mb-3">
+  <a routerLink="/home" class="btn btn-outline-light">
+    ← Volver
+  </a>
+</div>
+
+<!-- TÍTULO -->
+<h2 class="ranch-title text-center mb-4">
+  📅 Mis Reservas
+</h2>
+
+<!-- GRID RESERVAS -->
+<section class="reservas-wrapper container">
+  <div class="row g-4" *ngIf="reservas.length; else sinReservas">
+    <div class="col-12 col-lg-6" *ngFor="let r of reservas">
+      <article class="reserva-card h-100 shadow">
+
+        <!-- CABECERA -->
+        <header class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">
+            🧾 Reserva #{{ r.reserva?.numero_reserva || '—' }}
+          </h5>
+          <span class="badge estado"
+                [ngClass]="r.estado || 'pendiente'">
+            {{ (r.estado || 'pendiente') | titlecase }}
+          </span>
+        </header>
+
+        <!-- DETALLE -->
+        <ul class="detalle list-unstyled mb-3">
+          <li><strong>📅 Fecha:</strong> {{ r.reserva?.fecha_reserva | date:'fullDate' }}</li>
+          <li><strong>🪑 Mesa:</strong> #{{ r.reserva?.mesa?.numero || '—' }}</li>
+          <li><strong>📍 Ubicación:</strong> {{ r.reserva?.mesa?.ubicacion || '—' }}</li>
+          <li><strong>👥 Capacidad:</strong> {{ r.reserva?.mesa?.capacidad || '—' }} pers.</li>
+          <li>
+            <strong>📌 Estado Reserva:</strong>
+            <span class="badge estado-reserva">
+              {{ r.reserva?.estado || '—' }}
+            </span>
+          </li>
+        </ul>
+
+        <!-- PRODUCTOS -->
+        <h6 class="fw-bold mb-2">🛍️ Productos</h6>
+        <ul class="productos ps-3 mb-3">
+          <li *ngFor="let p of r.productos">
+            {{ p.producto?.nombre }} — {{ p.cantidad }} × ${{ p.precio_unitario }}
+          </li>
+        </ul>
+
+        <!-- TOTALES -->
+        <div class="d-flex justify-content-between flex-wrap mb-3">
+          <span><strong>Total:</strong> ${{ r.total }}</span>
+          <span><strong>Pago:</strong> {{ r.metodo_pago }}</span>
+        </div>
+
+        <!-- BOTONES -->
+        <div class="d-grid gap-2">
+          <button *ngIf="boletas[r._id]"
+                  class="btn btn-success"
+                  (click)="descargarBoleta(boletas[r._id]._id)">
+            📄 Descargar Boleta
+          </button>
+
+          <button *ngIf="boletas[r._id] === null"
+                  class="btn btn-outline-primary"
+                  (click)="generarBoleta(r)">
+            ➕ Generar Boleta
+          </button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- SIN RESERVAS -->
+  <ng-template #sinReservas>
+    <p class="text-center text-muted fs-5 mt-5">
+      ❌ No tienes reservas registradas.
+    </p>
+  </ng-template>
+</section>
+

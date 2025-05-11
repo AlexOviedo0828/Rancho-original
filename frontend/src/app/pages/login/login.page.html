@@ -1,0 +1,31 @@
+<div class="login-background">
+  <div class="logo-container">
+    <img src="../../../assets/img/logo.png" alt="Logo Toro" class="logo-img" />
+  </div>
+
+  <mat-card class="login-card">
+    <h2 class="title">Iniciar sesión</h2>
+
+    <form (ngSubmit)="login()" autocomplete="off">
+      <mat-form-field appearance="fill" class="styled-input">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput type="email" [(ngModel)]="correo" name="correo" required />
+        <mat-icon matSuffix>mail</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="styled-input">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" [(ngModel)]="contrasena" name="contrasena" required />
+        <mat-icon matSuffix>lock</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button color="accent" class="btn-login" type="submit" [disabled]="cargando">
+        {{ cargando ? 'Cargando...' : 'INGRESAR' }}
+      </button>
+    </form>
+
+    <p class="text-center mt-3 volver-link">
+      ¿No tienes cuenta? <a [routerLink]="['/login/registro']">Registrarse aquí</a>
+    </p>
+  </mat-card>
+</div>

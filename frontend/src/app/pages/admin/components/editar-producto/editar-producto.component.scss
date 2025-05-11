@@ -1,0 +1,53 @@
+.container {
+  max-width: 600px;
+  margin: auto;
+  background-color: #fffbe6;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #5c3d00;
+  font-weight: bold;
+}
+
+label {
+  font-weight: 600;
+  color: #333;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea {
+  border-radius: 0.5rem;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  background-color: #fffaf2;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+.btn {
+  font-weight: bold;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.img-thumbnail {
+  border-radius: 0.75rem;
+  border: 2px solid #d3a019;
+}

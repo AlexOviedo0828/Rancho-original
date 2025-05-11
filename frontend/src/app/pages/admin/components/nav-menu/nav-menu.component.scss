@@ -1,0 +1,50 @@
+#wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 240px;
+  transition: width 0.3s ease;
+  background-color: #090909;
+  min-height: 100vh;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+
+  .list-group-item {
+    font-size: 0;
+  }
+
+  .list-group-item i {
+    font-size: 1.2rem;
+    margin-right: 0;
+  }
+
+  .sidebar-heading {
+    font-size: 0;
+  }
+
+  .sidebar-heading i {
+    font-size: 1.5rem;
+  }
+}
+
+.list-group-item i {
+  margin-right: 10px;
+}
+
+#page-content-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #dda326;
+  color: rgb(16, 16, 16);
+}
+
+a.active {
+  background-color: #ffc107 !important;
+  font-weight: bold;
+  color: black !important;
+}

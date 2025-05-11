@@ -1,0 +1,65 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4 ranch-title">📦 Gestión de Pedidos</h2>
+
+  <!-- Filtros -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Buscar por cliente o pedido..."
+        [(ngModel)]="filtroTexto"
+      />
+    </div>
+    <div class="col-md-4">
+      <select class="form-select" [(ngModel)]="filtroEstado">
+        <option value="">Todos los estados</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="en_proceso">En proceso</option>
+        <option value="en_camino">En camino</option>
+        <option value="entregado">Entregado</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tabla de pedidos -->
+  <div class="table-responsive shadow-sm rounded bg-light p-3">
+    <table class="table table-hover table-bordered align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>N° Pedido</th>
+          <th>Cliente</th>
+          <th>Productos</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pedido of pedidosFiltrados()">
+          <td>{{ pedido.contador_pedido }}</td>
+          <td>{{ pedido.usuario?.nombre_completo || '—' }}</td>
+          <td>
+            <ul class="list-unstyled">
+              <li *ngFor="let item of pedido.productos">
+                {{ item.producto?.nombre }} (x{{ item.cantidad }})
+              </li>
+            </ul>
+          </td>
+          <td>$ {{ pedido.total | number:'1.0-0' }}</td>
+          <td><span class="badge bg-secondary">{{ pedido.estado }}</span></td>
+          <td>{{ pedido.fecha | date:'short' }}</td>
+          <td>
+
+            <button class="btn btn-sm btn-warning me-1" (click)="editarPedido(pedido)">✏️</button>
+            <button class="btn btn-sm btn-danger" (click)="eliminarPedido(pedido._id)">🗑️</button>
+          </td>
+        </tr>
+        <tr *ngIf="pedidosFiltrados().length === 0">
+          <td colspan="7" class="text-center text-muted">No hay pedidos que coincidan</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

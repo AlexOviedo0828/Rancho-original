@@ -1,0 +1,49 @@
+<div class="d-flex" id="wrapper">
+  <!-- Sidebar -->
+  <div class="border-end bg-light sidebar" [ngClass]="{ 'collapsed': isCollapsed }" id="sidebar-wrapper">
+
+    <div class="sidebar-heading text-dark bg-withe p-3 text-center">
+      <img src="../../../../../assets/img/1579.jpg" alt="Logo Toro" class="logo-img" />
+      <i class="bi bi-fire"></i> El Rancho
+    </div>
+    <div class="list-group list-group-flush">
+      <a routerLink="/admin/crear-producto" routerLinkActive="active"
+         class="list-group-item list-group-item-action bg-light">
+        <i class="bi bi-hammer"></i> Crear Producto
+      </a>
+      <a routerLink="/admin/listar-productos" routerLinkActive="active"
+         class="list-group-item list-group-item-action bg-light">
+        <i class="bi bi-box-seam"></i> Listar Productos
+      </a>
+      <a routerLink="/admin/pedidos" routerLinkActive="active"
+         class="list-group-item list-group-item-action bg-light">
+        <i class="bi bi-clipboard-data"></i> Pedidos
+      </a>
+      <a routerLink="/admin/crear-usuario" routerLinkActive="active"
+         class="list-group-item list-group-item-action bg-light">
+        <i class="bi bi-arrow-return-left"></i> Crear Usuarios
+      </a>
+      <a routerLink="/admin/soporte" routerLinkActive="active"
+         class="list-group-item list-group-item-action bg-light">
+        <i class="bi bi-headset"></i> Soporte
+      </a>
+      <a (click)="logout()" class="list-group-item list-group-item-action bg-light text-danger">
+        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+      </a>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper" class="w-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom px-3">
+      <button class="btn btn-outline-light" (click)="toggleMenu()">
+        <i class="bi" [ngClass]="{ 'bi-layout-sidebar-inset-reverse': !isCollapsed, 'bi-layout-sidebar-inset': isCollapsed }"></i>
+      </button>
+      <span class="navbar-brand ms-3">Panel de Administración</span>
+    </nav>
+
+    <div class="container-fluid p-4">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
