@@ -34,8 +34,9 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-
-              "src/global.scss", "src/theme/variables.scss"],
+              "src/global.scss",
+              "src/theme/variables.scss"
+            ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
@@ -83,7 +84,7 @@
               "buildTarget": "frontend:build:production"
             },
             "development": {
-              "buildTarget": "app:build:development"
+              "buildTarget": "frontend:build:development"
             },
             "ci": {
               "progress": false
@@ -94,7 +95,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "app:build"
+            "buildTarget": "frontend:build"
           }
         },
         "test": {
