@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl:'https://hamburgeseria-el-rancho-backend.onrender.com'
+
+    apiUrl: 'https://el-rancho-api.onrender.com/api'
+
+
 };
 
 /*
