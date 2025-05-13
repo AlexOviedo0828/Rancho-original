@@ -10,7 +10,14 @@ dotenv.config();
 
 // App Express
 const app = express();
-app.use(cors());
+
+// Configurar CORS para Vercel
+app.use(cors({
+  origin: 'https://el-rancho-ten.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -25,16 +32,12 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Importar rutas
 const usuarioRoutes = require('./routes/Usuario.routes');
 const rolRoutes = require('./routes/Rol.routes');
-const productoRoutes = require('./routes/Producto.routes')
+const productoRoutes = require('./routes/Producto.routes');
 const reservaRoutes = require('./routes/Reserva.routes');
 const pedidoRoutes = require('./routes/Pedido.routes');
 const boletaRoutes = require('./routes/Boleta.routes');
 const mesaRoutes = require('./routes/Mesa.routes');
-// ✅ CORRECTO
 const chatRoutes = require('./routes/chat.routes');
-
-
-
 
 // Rutas base
 app.use('/api/usuarios', usuarioRoutes);
@@ -46,6 +49,7 @@ app.use('/api/boletas', boletaRoutes);
 app.use('/api/mesas', mesaRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/mensajes', chatRoutes);
+
 // Ruta base de prueba
 app.get('/', (req, res) => {
   res.send('🔥 Bienvenido a El Rancho API Backend');
