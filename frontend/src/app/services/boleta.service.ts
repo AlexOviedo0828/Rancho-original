@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoletaService {
-  http: any;
-  api: any;
-  authHeaders: any;
+  private API_URL = `${environment.apiUrl}/boletas`;
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
-// boleta.service.ts
-getBoleta(id: string) {
-  return this.http.get(`${this.api}/boletas/${id}`, {
-    headers: this.authHeaders
-  });
-}
+  getBoleta(id: string) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.get(`${this.API_URL}/${id}`, { headers });
+  }
 }

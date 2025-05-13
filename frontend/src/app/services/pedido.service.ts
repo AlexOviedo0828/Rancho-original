@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PedidoService {
-  private apiUrl = 'http://localhost:4000/api/pedidos';
+  private apiUrl = `${environment.apiUrl}/pedidos`;
 
   constructor(private http: HttpClient) {}
 
@@ -31,10 +32,4 @@ export class PedidoService {
   eliminarPedido(id: string) {
     return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
-
-
-
-
-
 }
-

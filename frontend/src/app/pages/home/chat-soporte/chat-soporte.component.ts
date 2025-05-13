@@ -21,19 +21,19 @@ export class ChatSoporteComponent implements OnInit {
     const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
     this.usuarioId = usuario?._id || '';
     this.rol = usuario?.rol || '';
-
     this.obtenerMensajes();
     setInterval(() => this.obtenerMensajes(), 4000);
   }
 
   obtenerMensajes(): void {
-    this.chatService.obtenerMensajesPorUsuario(this.usuarioId).subscribe({
-      next: (mensajes: any[]) => {
+    this.chatService.obtenerHiloPorUsuario(this.usuarioId).subscribe(
+      (mensajes: any) => {
         this.mensajes = mensajes;
         this.scrollAlFinal();
       },
-      error: () => console.error('❌ Error al obtener mensajes')
-    });
+      (err: any) => console.error('❌ Error al obtener mensajes', err)
+    );
+
   }
 
   enviarMensaje(): void {
@@ -41,17 +41,17 @@ export class ChatSoporteComponent implements OnInit {
 
     const data = {
       mensaje: this.mensajeNuevo,
-      rol: 'usuario' as const,
+      rol: 'usuario',
       emisor: this.usuarioId,
       usuarioId: this.usuarioId
     };
 
-    this.chatService.enviarMensaje(data).subscribe({
+    this.chatService.crearMensaje(data).subscribe({
       next: () => {
         this.mensajeNuevo = '';
         this.obtenerMensajes();
       },
-      error: (err) => console.error('❌ Error al enviar mensaje:', err)
+      error: (err: any) => console.error('❌ Error al enviar mensaje:', err)
     });
   }
 

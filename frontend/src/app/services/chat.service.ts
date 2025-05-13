@@ -1,56 +1,60 @@
-// src/app/services/chat.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
-type Rol = 'usuario' | 'admin' | 'cocina';
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ChatService {
-  private readonly api = 'http://localhost:4000/api/chat';
+  private API_URL = `${environment.apiUrl}/chat`;
 
   constructor(private http: HttpClient) {}
 
-  private headers(): HttpHeaders {
-    return new HttpHeaders().set(
-      'Authorization',
-      `Bearer ${localStorage.getItem('token') || ''}`
-    );
-  }
-
-  /** Solo cocina/admin */
-  getHilos(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/hilos`, { headers: this.headers() });
-  }
-
-  obtenerMensajesPorUsuario(uid: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/hilos/${uid}`, {
-      headers: this.headers()
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token') || ''}`
     });
   }
 
-
-  /** Usuario obtiene sus propios mensajes */
-  obtenerMisMensajes(): Observable<any[]> {
-    return this.http.get<any[]>(this.api, { headers: this.headers() });
-  }
-
-  enviarMensaje(data: {
-    mensaje: string;
-    rol: Rol;
-    usuarioId: string;
-    emisor?: string;
-  }): Observable<any> {
-    return this.http.post(this.api, data, { headers: this.headers() });
-  }
-
-  responderMensaje(id: string, respuesta: string): Observable<any> {
-    return this.http.put(`${this.api}/${id}/responder`, { respuesta }, {
-      headers: this.headers()
+  // Crear mensaje (tanto usuario como cocina)
+  crearMensaje(mensaje: any) {
+    return this.http.post(`${this.API_URL}`, mensaje, {
+      headers: this.getHeaders()
     });
   }
 
-  limpiarMensajesUsuario(): Observable<any> {
-    return this.http.delete(`${this.api}/limpiar`, { headers: this.headers() });
+  // Obtener todos los mensajes del usuario logeado (rol usuario o cocina)
+  obtenerMensajes() {
+    return this.http.get(`${this.API_URL}`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  // Responder mensaje por ID
+  responderMensaje(id: string, respuesta: string) {
+    return this.http.patch(`${this.API_URL}/${id}/responder`, { respuesta }, {
+      headers: this.getHeaders()
+    });
+  }
+
+  // Borrar todos los mensajes del usuario actual
+  borrarMensajes() {
+    return this.http.delete(`${this.API_URL}`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  // Obtener lista de hilos (solo cocina o admin)
+  obtenerHilos() {
+    return this.http.get(`${this.API_URL}/hilos`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  // Obtener todos los mensajes de un hilo específico (usuarioId)
+  obtenerHiloPorUsuario(usuarioId: string) {
+    return this.http.get(`${this.API_URL}/hilo/${usuarioId}`, {
+      headers: this.getHeaders()
+    });
   }
 }

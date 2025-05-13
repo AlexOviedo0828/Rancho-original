@@ -1,6 +1,5 @@
 <!-- CONTENEDOR GENERAL -->
 <div class="chat-dashboard container-fluid py-4">
-
   <div class="row g-4">
 
     <!-- 📦 PEDIDOS -->
@@ -24,7 +23,6 @@
                 <th>Acción</th>
               </tr>
             </thead>
-
             <tbody>
               <tr *ngFor="let p of pedidos; index as i">
                 <td>{{ i + 1 }}</td>
@@ -33,11 +31,7 @@
                 <td>🪑 Nº {{ p.reserva?.numero_reserva || '-' }}</td>
                 <td>${{ p.total | number:'1.0-0' }}</td>
                 <td>{{ p.fecha_reserva | date:'short' }}</td>
-
-                <td>
-                  <span class="badge bg-info text-dark">{{ p.estado }}</span>
-                </td>
-
+                <td><span class="badge bg-info text-dark">{{ p.estado }}</span></td>
                 <td>
                   <select class="form-select form-select-sm mb-1" [(ngModel)]="p.estado">
                     <option>En proceso</option>
@@ -88,14 +82,13 @@
       <article class="card shadow-sm h-100 d-flex flex-column">
 
         <!-- Cabecera -->
-        <header *ngIf="selectedUid"
-                class="card-header bg-success text-white fw-bold">
+        <header *ngIf="selectedUid" class="card-header bg-success text-white fw-bold">
           💬 Conversación con {{ selectedNombre }}
         </header>
 
         <!-- Mensajes -->
         <div *ngIf="selectedUid"
-             class="chat-box flex-grow-1 p-3" #chatScroll>
+             class="chat-box flex-grow-1 p-3 overflow-auto" #chatScroll>
 
           <ng-container *ngFor="let msg of mensajes">
             <div [ngClass]="{
@@ -113,9 +106,7 @@
                      'bubble-cocina': msg.rol === 'cocina',
                      'bubble-usuario': msg.rol === 'usuario'
                    }">
-
                 {{ msg.mensaje }}
-
                 <div class="timestamp">
                   {{ msg.fecha | date:'shortTime' }}
                   <span *ngIf="msg.rol === 'usuario' && msg.respondido"
@@ -127,8 +118,7 @@
         </div>
 
         <!-- Input -->
-        <footer *ngIf="selectedUid"
-                class="card-footer p-2">
+        <footer *ngIf="selectedUid" class="card-footer p-2">
           <form class="input-group" (ngSubmit)="enviarMensaje()">
             <input [(ngModel)]="mensajeNuevo"
                    name="mensaje"

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-chat-cocina',
@@ -21,6 +22,8 @@ export class ChatCocinaComponent implements OnInit {
 
   @ViewChild('chatScroll') chatScroll!: ElementRef;
 
+  private API_URL = `${environment.apiUrl}/pedidos`;
+
   constructor(
     private chat: ChatService,
     private http: HttpClient
@@ -33,36 +36,39 @@ export class ChatCocinaComponent implements OnInit {
     setInterval(() => this.cargarHilos(), 4000);
   }
 
-  private headers() {
-    return { Authorization: `Bearer ${localStorage.getItem('token')}` };
+  private headers(): HttpHeaders {
+    return new HttpHeaders().set(
+      'Authorization',
+      `Bearer ${localStorage.getItem('token') || ''}`
+    );
   }
 
   cargarPedidos(): void {
     this.http
-      .get<any[]>('http://localhost:4000/api/pedidos', { headers: this.headers() })
+      .get<any[]>(this.API_URL, { headers: this.headers() })
       .subscribe({
-        next: res => (this.pedidos = res),
-        error: err => console.error('❌ Error al cargar pedidos:', err)
+        next: (res: any[]) => (this.pedidos = res),
+        error: (err: any) => console.error('❌ Error al cargar pedidos:', err)
       });
   }
 
   actualizarEstado(id: string, estado: string): void {
     this.http
       .patch(
-        `http://localhost:4000/api/pedidos/${id}/estado`,
+        `${this.API_URL}/${id}/estado`,
         { estado },
         { headers: this.headers() }
       )
       .subscribe({
         next: () => this.cargarPedidos(),
-        error: err => console.error('❌ Error al actualizar estado:', err)
+        error: (err: any) => console.error('❌ Error al actualizar estado:', err)
       });
   }
 
   cargarHilos(): void {
-    this.chat.getHilos().subscribe({
-      next: h => (this.hilos = h),
-      error: err => console.error('❌ Error al cargar hilos:', err)
+    this.chat.obtenerHilos().subscribe({
+      next: (h: any) => (this.hilos = h),
+      error: (err: any) => console.error('❌ Error al cargar hilos:', err)
     });
   }
 
@@ -79,40 +85,35 @@ export class ChatCocinaComponent implements OnInit {
       return;
     }
 
-    this.chat.obtenerMensajesPorUsuario(this.selectedUid).subscribe({
-      next: m => {
+    this.chat.obtenerHiloPorUsuario(this.selectedUid).subscribe({
+      next: (m: any) => {
         this.mensajes = m;
         this.scrollAbajo();
       },
-      error: () => console.error('❌ Error al obtener mensajes')
+      error: (err: any) => console.error('❌ Error al obtener mensajes:', err)
     });
   }
+
   enviarMensaje(): void {
     if (!this.mensajeNuevo.trim() || !this.selectedUid) return;
 
     const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
 
-    const data: {
-      mensaje: string;
-      rol: 'cocina';
-      emisor: string;
-      usuarioId: string;
-    } = {
+    const data = {
       mensaje: this.mensajeNuevo,
       rol: 'cocina',
       emisor: usuario._id,
       usuarioId: this.selectedUid
     };
 
-    this.chat.enviarMensaje(data).subscribe({
+    this.chat.crearMensaje(data).subscribe({
       next: () => {
         this.mensajeNuevo = '';
         this.cargarMensajesDelHilo();
       },
-      error: err => console.error('❌ Error al enviar mensaje:', err)
+      error: (err: any) => console.error('❌ Error al enviar mensaje:', err)
     });
   }
-
 
   private scrollAbajo(): void {
     setTimeout(() => {

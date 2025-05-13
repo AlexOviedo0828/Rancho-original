@@ -1,6 +1,8 @@
+/* ──────── frontend/src/app/services/auth.service.ts ──────── */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from 'src/environments/environment';
 
 export interface JwtRespuesta {
   token: string;
@@ -10,22 +12,26 @@ export interface JwtRespuesta {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private API_URL = 'http://localhost:4000/api/usuarios';
+  /** URL base del backend sacada del environment */
+  private API_URL = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) {}
 
+  /* ---------- Auth ---------- */
   login(correo: string, contrasena: string) {
-    return this.http.post<JwtRespuesta>(`${this.API_URL}/login`, { correo, contrasena });
+    return this.http.post<JwtRespuesta>(`${this.API_URL}/usuarios/login`, { correo, contrasena });
   }
 
   registro(usuario: { nombre_completo: string; correo: string; contrasena: string }) {
-    return this.http.post(`${this.API_URL}/registro`, { ...usuario, rol: 'usuario' });
+    return this.http.post(`${this.API_URL}/usuarios/registro`, { ...usuario, rol: 'usuario' });
   }
 
+  /* ---------- Roles ---------- */
   getRolPorNombre(nombre: string) {
-    return this.http.get<any>(`http://localhost:4000/api/roles/${nombre}`);
+    return this.http.get<any>(`${this.API_URL}/roles/${nombre}`);
   }
 
+  /* ---------- Helpers ---------- */
   getNombreUsuario(): string {
     const token = localStorage.getItem('token');
     if (token) {
@@ -43,9 +49,9 @@ export class AuthService {
     const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
     return usuario?._id || '';
   }
+
   getUsuarioCompleto(): any {
     const user = localStorage.getItem('usuario');
     return user ? JSON.parse(user) : null;
   }
-
 }
