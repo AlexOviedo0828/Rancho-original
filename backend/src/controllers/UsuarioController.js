@@ -11,9 +11,11 @@ exports.login = async (req, res) => {
   console.log('🔍 Body recibido:', req.body);
 
   try {
-    const { correo, contrasena, contraseña } = req.body;
-    const password = contrasena || contraseña;
-    console.log('🔐 Password recibido:', password);
+    const { correo, contrasena } = req.body;
+
+    if (!correo || !contrasena) {
+      return res.status(400).json({ mensaje: 'Faltan credenciales' });
+    }
 
     const usuario = await Usuario
       .findOne({ correo })
@@ -22,19 +24,29 @@ exports.login = async (req, res) => {
 
     console.log('👤 Usuario encontrado:', usuario);
 
-    if (!usuario) return res.status(400).json({ mensaje: 'Correo no registrado' });
+    if (!usuario) {
+      return res.status(400).json({ mensaje: 'Correo no registrado' });
+    }
 
     const hash = usuario.contrasena;
-    if (!hash) return res.status(400).json({ mensaje: 'Usuario sin contraseña válida' });
+    if (!hash) {
+      return res.status(400).json({ mensaje: 'Usuario sin contraseña válida' });
+    }
 
-    const valido = await bcrypt.compare(password, hash);
+    const valido = await bcrypt.compare(contrasena, hash);
     console.log('🔍 Contraseña válida?', valido);
 
-    if (!valido) return res.status(400).json({ mensaje: 'Contraseña incorrecta' });
+    if (!valido) {
+      return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
+    }
 
-    const token = jwt.sign({ id: usuario._id, rol: usuario.rol.nombre }, JWT_SECRET, { expiresIn: '8h' });
+    const token = jwt.sign(
+      { id: usuario._id, rol: usuario.rol.nombre },
+      JWT_SECRET,
+      { expiresIn: '8h' }
+    );
+
     console.log('✅ Token generado');
-
     res.json({ token, usuario: { _id: usuario._id, rol: usuario.rol.nombre } });
 
   } catch (err) {
@@ -42,7 +54,6 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
-
 
 /* ---------- REGISTRO ---------- */
 exports.crearUsuario = async (req, res) => {
