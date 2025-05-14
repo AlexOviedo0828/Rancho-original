@@ -99,10 +99,18 @@ export class MenuComponent implements OnInit {
   getTotal(): number {
     return this.neto + this.iva;
   }
-
   getImgUrl(nombre: string): string {
-    return `${environment.apiUrl}${nombre.startsWith('/') ? nombre : '/' + nombre}`;
+    if (!nombre) return '../../../../assets/img/Diseño sin título.jpg';
+
+    if (nombre.startsWith('/')) nombre = nombre.slice(1); // Quita barra inicial
+    if (!nombre.startsWith('uploads')) nombre = 'uploads/' + nombre;
+
+    // Usa el host sin `/api`
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}/${nombre}`;
   }
+
+
 
   agregarEntrega() {
     if (this.nuevaEntrega.descripcion && this.nuevaEntrega.tiempo > 0) {

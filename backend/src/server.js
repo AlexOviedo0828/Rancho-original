@@ -12,13 +12,13 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: ['https://el-rancho-ten.vercel.app', 'https://el-rancho-2.onrender.com'],
+  origin: ['https://el-rancho-ten.vercel.app', 'https://el-rancho-2.onrender.com','http://localhost:4200'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // Conexión a MongoDB
 mongoose.connect(process.env.MONGODB_URI, {

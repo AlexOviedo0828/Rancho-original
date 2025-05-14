@@ -72,11 +72,12 @@ export class ListarProductosComponent implements OnInit {
     }
   }
   getImgUrl(path: string): string {
-    if (!path) return '/assets/img/placeholder.jpg'; // imagen por defecto
+    if (!path) return '/assets/img/placeholder.jpg'; // imagen por defecto si no hay
     if (path.startsWith('http')) return path;
-    if (path.startsWith('/')) path = path.slice(1); // quita la barra inicial
-    return `${environment.apiUrl}/${path}`;
+    if (path.startsWith('/uploads')) path = path.slice(1); // quita la primera barra si viene así
+    return `http://localhost:4000/${path.startsWith('uploads') ? path : 'uploads/' + path}`;
   }
+
 
 
 }

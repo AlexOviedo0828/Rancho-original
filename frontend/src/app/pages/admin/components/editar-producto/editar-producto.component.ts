@@ -19,7 +19,6 @@ export class EditarProductoComponent implements OnInit {
 
   private BASE_URL = `${environment.apiUrl}/productos`;
 
-
   constructor(
     private route: ActivatedRoute,
     public router: Router,
@@ -51,18 +50,25 @@ export class EditarProductoComponent implements OnInit {
           categoria: data.categoria,
           activo: data.activo
         });
+
         if (data.imagen) {
-          this.imagenPreview = data.imagen.startsWith('http')
-  ? data.imagen
-   : `${environment.apiUrl}${data.imagen}`;
-
-
+          this.imagenPreview = this.getImgUrl(data.imagen);
         }
       },
       error: () => {
         this.snackBar.open('Error al cargar producto', 'Cerrar', { duration: 3000 });
       }
     });
+  }
+
+  getImgUrl(nombre: string): string {
+    if (!nombre) return '../../../../assets/img/Diseño sin título.jpg';
+
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    if (nombre.startsWith('/')) nombre = nombre.slice(1);
+    if (!nombre.startsWith('uploads')) nombre = 'uploads/' + nombre;
+
+    return `${baseUrl}/${nombre}`;
   }
 
   seleccionarImagen(event: any) {
@@ -74,12 +80,10 @@ export class EditarProductoComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-  actualizarProducto() {
-    const token = localStorage.getItem('token'); // ⬅️ Recupera el token guardado
 
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
+  actualizarProducto() {
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
 
     const formData = new FormData();
     Object.entries(this.productoForm.value).forEach(([key, value]) => {
@@ -100,6 +104,4 @@ export class EditarProductoComponent implements OnInit {
       }
     });
   }
-
-
 }

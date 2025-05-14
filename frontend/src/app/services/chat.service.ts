@@ -51,10 +51,10 @@ export class ChatService {
     });
   }
 
-  // Obtener todos los mensajes de un hilo específico (usuarioId)
-  obtenerHiloPorUsuario(usuarioId: string) {
-    return this.http.get(`${this.API_URL}/hilo/${usuarioId}`, {
+  obtenerHiloPorUsuario(uid: string) {
+    return this.http.get(`${this.API_URL}/hilos/${uid}`, {
       headers: this.getHeaders()
     });
   }
+
 }
