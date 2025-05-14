@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-crear-producto',
@@ -13,7 +14,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CrearProductoComponent {
   productoForm!: FormGroup;
   imagenSeleccionada: File | null = null;
-  private BASE_URL = 'http://localhost:4000/api/productos';
+  private BASE_URL = `${environment.apiUrl}/productos`;
+
 
   constructor(
     private fb: FormBuilder,

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-editar-producto',
@@ -16,7 +17,8 @@ export class EditarProductoComponent implements OnInit {
   imagenPreview: string | ArrayBuffer | null = null;
   imagenSeleccionada: File | null = null;
 
-  private BASE_URL = 'http://localhost:4000/api/productos';
+  private BASE_URL = `${environment.apiUrl}/productos`;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -52,7 +54,8 @@ export class EditarProductoComponent implements OnInit {
         if (data.imagen) {
           this.imagenPreview = data.imagen.startsWith('http')
   ? data.imagen
-  : `http://localhost:4000${data.imagen}`;
+   : `${environment.apiUrl}${data.imagen}`;
+
 
         }
       },

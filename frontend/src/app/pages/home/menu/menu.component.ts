@@ -1,10 +1,10 @@
-// menu.component.ts
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmarDialogComponent } from 'src/app/dialogs/confirmar-dialog/confirmar-dialog.component';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-menu',
@@ -33,7 +33,7 @@ export class MenuComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.http.get<any[]>('http://localhost:4000/api/productos').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/productos`).subscribe({
       next: (productos) => {
         const map = new Map<string, any[]>();
         productos.forEach(p => {
@@ -47,7 +47,7 @@ export class MenuComponent implements OnInit {
       error: () => alert('Error al cargar productos')
     });
 
-    this.http.get<any[]>('http://localhost:4000/api/mesas').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/mesas`).subscribe({
       next: (mesas) => this.mesas = mesas,
       error: () => alert('Error al cargar mesas')
     });
@@ -101,7 +101,7 @@ export class MenuComponent implements OnInit {
   }
 
   getImgUrl(nombre: string): string {
-    return `http://localhost:4000${nombre}`;
+    return `${environment.apiUrl}${nombre.startsWith('/') ? nombre : '/' + nombre}`;
   }
 
   agregarEntrega() {
@@ -143,7 +143,7 @@ export class MenuComponent implements OnInit {
         const token = localStorage.getItem('token') || '';
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-        this.http.post<any>('http://localhost:4000/api/pedidos', datosCompletos, { headers }).subscribe({
+        this.http.post<any>(`${environment.apiUrl}/pedidos`, datosCompletos, { headers }).subscribe({
           next: (pedido) => {
             this.generarBoleta(pedido._id);
             this.vaciar();
@@ -163,7 +163,7 @@ export class MenuComponent implements OnInit {
     const token = localStorage.getItem('token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.post<any>('http://localhost:4000/api/boletas', {
+    this.http.post<any>(`${environment.apiUrl}/boletas`, {
       pedido: pedidoId,
       total_neto: this.neto
     }, { headers }).subscribe({
@@ -181,7 +181,7 @@ export class MenuComponent implements OnInit {
     const token = localStorage.getItem('token') || '';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.get(`http://localhost:4000/api/boletas/${this.boletaGenerada._id}/descargar`, {
+    this.http.get(`${environment.apiUrl}/boletas/${this.boletaGenerada._id}/descargar`, {
       headers,
       responseType: 'blob'
     }).subscribe(blob => {
@@ -197,6 +197,4 @@ export class MenuComponent implements OnInit {
   volverInicio() {
     this.router.navigate(['/home']);
   }
-
-
 }

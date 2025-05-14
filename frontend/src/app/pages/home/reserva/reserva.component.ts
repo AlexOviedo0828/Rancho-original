@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-reserva',
@@ -76,7 +77,7 @@ export class ReservaComponent implements OnInit {
   }
 
   obtenerUltimoNumeroReserva(): void {
-    this.http.get<any[]>('http://localhost:4000/api/reservas').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/reservas`).subscribe({
       next: (reservas) => {
         const ult = reservas.map(r => r.numero_reserva || 0);
         this.ultimoNumeroReserva = Math.max(...ult, 0);
@@ -104,11 +105,10 @@ export class ReservaComponent implements OnInit {
         const idReserva = res._id;
         localStorage.setItem('numeroReserva', res.numero_reserva);
 
-        // 🔁 Ahora actualizamos el pedido con la reserva creada
         const token = localStorage.getItem('token') || '';
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-        this.http.patch<any>(`http://localhost:4000/api/pedidos/${this.pedidoId}`, {
+        this.http.patch<any>(`${environment.apiUrl}/pedidos/${this.pedidoId}`, {
           reserva: idReserva
         }, { headers }).subscribe({
           next: (pedidoActualizado: any) => {

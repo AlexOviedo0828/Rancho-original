@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-mis-reservas',
@@ -21,7 +22,7 @@ export class MisReservasComponent implements OnInit {
   }
 
   cargarReservas(): void {
-    this.http.get<any[]>('http://localhost:4000/api/pedidos', {
+    this.http.get<any[]>(`${environment.apiUrl}/pedidos`, {
       headers: { Authorization: `Bearer ${this.authService.getToken()}` }
     }).subscribe({
       next: (res) => {
@@ -34,7 +35,7 @@ export class MisReservasComponent implements OnInit {
   }
 
   obtenerBoleta(pedidoId: string): void {
-    this.http.get<any>(`http://localhost:4000/api/boletas/pedido/${pedidoId}`, {
+    this.http.get<any>(`${environment.apiUrl}/boletas/pedido/${pedidoId}`, {
       headers: { Authorization: `Bearer ${this.authService.getToken()}` }
     }).subscribe({
       next: (boleta) => this.boletas[pedidoId] = boleta,
@@ -49,7 +50,7 @@ export class MisReservasComponent implements OnInit {
       pedido: pedido._id
     };
 
-    this.http.post('http://localhost:4000/api/boletas', payload, {
+    this.http.post(`${environment.apiUrl}/boletas`, payload, {
       headers: { Authorization: `Bearer ${this.authService.getToken()}` }
     }).subscribe({
       next: (boleta) => {
@@ -64,6 +65,6 @@ export class MisReservasComponent implements OnInit {
   }
 
   descargarBoleta(id: string): void {
-    window.open(`http://localhost:4000/api/boletas/${id}/descargar`, '_blank');
+    window.open(`${environment.apiUrl}/boletas/${id}/descargar`, '_blank');
   }
 }

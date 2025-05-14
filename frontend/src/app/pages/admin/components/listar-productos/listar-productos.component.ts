@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-listar-productos',
@@ -12,7 +13,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ListarProductosComponent implements OnInit {
   productos: any[] = [];
   terminoBusqueda: string = ''; // 👈 variable del input
-  private BASE_URL = 'http://localhost:4000/api/productos';
+  private BASE_URL = `${environment.apiUrl}/productos`;
+
 
   constructor(
     private http: HttpClient,
@@ -70,10 +72,11 @@ export class ListarProductosComponent implements OnInit {
     }
   }
   getImgUrl(path: string): string {
-    if (!path) return '/assets/img/placeholder.jpg'; // opcional si no hay imagen
+    if (!path) return '/assets/img/placeholder.jpg'; // imagen por defecto
     if (path.startsWith('http')) return path;
-    if (path.startsWith('/uploads')) path = path.slice(1); // elimina la barra inicial
-    return `http://localhost:4000/${path}`;
+    if (path.startsWith('/')) path = path.slice(1); // quita la barra inicial
+    return `${environment.apiUrl}/${path}`;
   }
+
 
 }
