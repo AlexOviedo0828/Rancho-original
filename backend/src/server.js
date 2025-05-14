@@ -11,9 +11,8 @@ dotenv.config();
 // App Express
 const app = express();
 
-// Configurar CORS para Vercel
 app.use(cors({
-  origin: 'https://el-rancho-ten.vercel.app',
+  origin: ['https://el-rancho-ten.vercel.app', 'https://el-rancho-2.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
