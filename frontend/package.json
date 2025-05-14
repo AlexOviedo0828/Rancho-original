@@ -70,7 +70,7 @@
   },
   "description": "An Ionic project",
   "engines": {
-    "node": "18.17.1"
+    "node": "22.x"
   }
 
 
