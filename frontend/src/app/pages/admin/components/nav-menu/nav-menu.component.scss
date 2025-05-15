@@ -1,50 +1,116 @@
-#wrapper {
-  display: flex;
-  height: 100vh;
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  background-color: #121212;
   overflow: hidden;
 }
 
-.sidebar {
-  width: 240px;
-  transition: width 0.3s ease;
-  background-color: #090909;
-  min-height: 100vh;
+/* Layout principal */
+#wrapper {
+  display: flex;
+  height: 100vh;
 }
 
-.sidebar.collapsed {
-  width: 70px;
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+  background-color: #1f1f1f;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 1rem;
+  overflow-y: auto;
+  transition: all 0.3s ease-in-out;
 
-  .list-group-item {
-    font-size: 0;
-  }
+  &.collapsed {
+    width: 70px;
 
-  .list-group-item i {
-    font-size: 1.2rem;
-    margin-right: 0;
+    .nav-link,
+    .sidebar-heading h5 {
+      display: none;
+    }
+
+    .logo-img {
+      width: 40px;
+      height: 40px;
+    }
   }
 
   .sidebar-heading {
-    font-size: 0;
+    text-align: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #333;
+    font-size: 1.1rem;
+    color: #ffc107;
+
+    .logo-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-bottom: 0.5rem;
+    }
   }
 
-  .sidebar-heading i {
-    font-size: 1.5rem;
+  .nav-link {
+    color: #ccc;
+    display: block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s;
+
+    &:hover,
+    &.active {
+      background-color: #ffc107;
+      color: #000;
+      font-weight: bold;
+    }
   }
 }
 
-.list-group-item i {
-  margin-right: 10px;
-}
-
+/* CONTENIDO PRINCIPAL */
 #page-content-wrapper {
-  flex: 1;
+  margin-left: 250px;
+  flex-grow: 1;
+  height: 100vh;
+  background-color: #121212;
   overflow-y: auto;
-  background-color: #dda326;
-  color: rgb(16, 16, 16);
+  padding: 2rem;
+  transition: margin-left 0.3s ease-in-out;
+
+  &.collapsed {
+    margin-left: 70px;
+  }
 }
 
-a.active {
-  background-color: #ffc107 !important;
-  font-weight: bold;
-  color: black !important;
+/* NAVBAR */
+.navbar {
+  background-color: #000;
+  border-bottom: 1px solid #333;
+
+  .navbar-brand {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+  }
+}
+
+/* BOTONES */
+.btn-outline-warning {
+  color: #ffc107;
+  border-color: #ffc107;
+
+  &:hover {
+    background-color: #ffc107;
+    color: #000;
+  }
+}
+
+/* CONTENIDO CON SCROLL */
+.contenido-scroll {
+  height: calc(100vh - 56px); // altura descontando la navbar
+  overflow-y: auto;
 }

@@ -16,9 +16,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmarDialogComponent } from './dialogs/confirmar-dialog/confirmar-dialog.component';
+import { DialogDetallePedidoComponent } from './pages/cocina/dialog-detalle-pedido/dialog-detalle-pedido.component';
 
 @NgModule({
-  declarations: [AppComponent, ConfirmarDialogComponent],
+  declarations: [AppComponent,
+    ConfirmarDialogComponent,
+    DialogDetallePedidoComponent,
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -32,7 +36,8 @@ BrowserModule,
     MatInputModule,
     MatButtonModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

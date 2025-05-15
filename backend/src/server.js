@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors({
   origin: ['https://el-rancho-ten.vercel.app', 'https://el-rancho-2.onrender.com','http://localhost:4200'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
   credentials: true
 }));
 

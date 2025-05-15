@@ -1,78 +1,64 @@
-/* PALETA “El Rancho” v2 */
-$cuero-oscuro:  #121111;
-$madera-clara:  #d58c32;
-$dorado:        #c79a35;
-$verde-musgo:   #3d6b3d;
-$crema:         #f9f4ec;
+// COLORES
+$negro: #121212;
+$oro: #c79a35;
+$madera: #d58c32;
+$verde: #3d6b3d;
+$crema: #f4ede2;
+$gris-suave: #cccccc;
 
-/* TITULO */
-.ranch-title {
+// TÍTULO
+.titulo-seccion {
+  color: $oro;
   font-weight: 700;
-  color: $dorado;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, .5);
+  font-size: 2rem;
 }
 
-/* CONTENEDOR */
-.reservas-wrapper {
-  max-width: 1020px;
+// CONTENEDOR
+.reservas-nuevas {
+  max-width: 1040px;
+  margin: auto;
 }
 
-/* CARD */
-.reserva-card {
-  background: $madera-clara;
-  border: 2px solid $dorado;
-  border-radius: 12px;
-  padding: 1.6rem;
-  color: $cuero-oscuro;
-  font-size: .95rem;
-  transition: transform .2s, box-shadow .2s;
+// TARJETA
+.tarjeta-reserva {
+  background: $negro;
+  border: 1px solid $oro;
+  transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(0,0,0,.18);
-  }
-
-  h5 { color: $cuero-oscuro; font-size: 1.1rem; }
-
-  /* badges */
-  .estado-reserva {
-    background: #02f71f;
-    color: $cuero-oscuro;
-    font-size: .8rem;
-    padding: 4px 9px;
-    border-radius: .5rem;
-  }
-
-  .estado {
-    font-size: .8rem;
-    padding: 4px 10px;
-    border-radius: .5rem;
-    &.recibido  { background:#d905f9; color:#242424; }
-    &.en\ camino { background:#f9c804; color:#534d0e; }
-    &.entregado { background:#02f959; }
-    &.pendiente { background:#040404; color:#6e4300; }
-
-  }
-
-  /* botones */
-  .btn-success {
-    background:$verde-musgo; border-color:$verde-musgo;
-    &:hover { background:darken($verde-musgo, 8%); }
-  }
-  .btn-outline-primary {
-    border-color:$dorado; color:$dorado;
-    &:hover { background:$dorado; color:$crema; }
+    box-shadow: 0 12px 20px rgba(0, 0, 0, .25);
   }
 }
 
-/* LISTA DETALLE / PRODUCTOS */
-.detalle li,
-.productos li { margin-bottom:.4rem; }
+// BADGE ESTADO PEDIDO
+.estado {
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  &.pendiente  { background: #444; color: $gris-suave; }
+  &.en\ camino { background: #ffc107; color: #000; }
+  &.entregado  { background: #28a745; color: white; }
+  &.recibido   { background: #6610f2; color: white; }
+}
 
-/* PEQUEÑO ajuste de badge “en camino” (clase con espacio) */
-.estado.en\ camino { background:#ffe66d; color:#534d0e; }
+// BOTONES
+.btn-outline-success {
+  border-color: $verde;
+  color: $verde;
+  &:hover {
+    background-color: $verde;
+    color: white;
+  }
+}
 
-/* RESPONSIVE */
-@media (max-width:575.98px){
-  .reserva-card { font-size:.9rem; }
+.btn-outline-warning {
+  border-color: $oro;
+  color: $oro;
+  &:hover {
+    background-color: $oro;
+    color: black;
+  }
 }

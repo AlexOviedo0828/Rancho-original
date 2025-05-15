@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   standalone: false
 })
 export class NavMenuComponent {
-  isCollapsed = false;
+  isCollapsed: boolean = false;
 
   constructor(private router: Router) {}
 

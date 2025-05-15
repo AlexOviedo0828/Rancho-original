@@ -16,7 +16,6 @@ export class CrearProductoComponent {
   imagenSeleccionada: File | null = null;
   private BASE_URL = `${environment.apiUrl}/productos`;
 
-
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,

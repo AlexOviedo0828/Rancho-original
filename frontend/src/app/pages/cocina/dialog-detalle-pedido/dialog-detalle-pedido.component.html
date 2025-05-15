@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>🧾 Detalle del Pedido</h2>
+<mat-dialog-content>
+  <p><strong>Usuario:</strong> {{ data.usuario?.nombre_completo }}</p>
+  <p><strong>Mesa:</strong> {{ data.mesa?.numero }}</p>
+  <p><strong>Reserva N°:</strong> {{ data.reserva?.numero_reserva }}</p>
+  <p><strong>Estado:</strong> {{ data.estado }}</p>
+  <p><strong>Fecha:</strong> {{ data.fecha_reserva | date:'short' }}</p>
+  <p><strong>Total:</strong> ${{ data.total | number:'1.0-0' }}</p>
+
+  <strong>🛍 Productos:</strong>
+  <ul>
+    <li *ngFor="let prod of data.productos">
+      {{ prod.nombre }} - Cant: {{ prod.cantidad }} - ${{ prod.precio }}
+    </li>
+  </ul>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar()">Cerrar</button>
+</mat-dialog-actions>

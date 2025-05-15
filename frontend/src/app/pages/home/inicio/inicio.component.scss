@@ -1,0 +1,47 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #121212;
+  background-size: cover;
+  background-position: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.contenido-amplio {
+  background-color: #484848;
+  padding: 2rem;
+  border-radius: 1rem;
+  margin-top: -10px;
+}
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 1rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 193, 7, 0.3);
+}
+
+.carousel-inner img {
+  border-radius: 1rem;
+}
+
+.btn-warning {
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+  color: #fff;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.text-white-50 {
+  color: rgba(226, 223, 223, 0.6) !important;
+}

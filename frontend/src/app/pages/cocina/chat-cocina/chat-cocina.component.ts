@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ChatService } from 'src/app/services/chat.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ChatService } from 'src/app/services/chat.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -10,31 +11,33 @@ import { environment } from 'src/environments/environment';
   standalone: false
 })
 export class ChatCocinaComponent implements OnInit {
-
   pedidos: any[] = [];
   hilos: any[] = [];
+  mensajes: any[] = [];
+  pedidoSeleccionado: any = null;
+  mensajeNuevo = '';
 
   selectedUid = '';
   selectedNombre = '';
 
-  mensajes: any[] = [];
-  mensajeNuevo = '';
-
   @ViewChild('chatScroll') chatScroll!: ElementRef;
-
   private API_URL = `${environment.apiUrl}/pedidos`;
 
   constructor(
     private chat: ChatService,
-    private http: HttpClient
+    private http: HttpClient,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.cargarPedidos();
     this.cargarHilos();
-
     setInterval(() => this.cargarHilos(), 4000);
   }
+
+  // --------------------------
+  // CARGA DE DATOS
+  // --------------------------
 
   private headers(): HttpHeaders {
     return new HttpHeaders().set(
@@ -44,54 +47,48 @@ export class ChatCocinaComponent implements OnInit {
   }
 
   cargarPedidos(): void {
-    this.http
-      .get<any[]>(this.API_URL, { headers: this.headers() })
+    this.http.get<any[]>(this.API_URL, { headers: this.headers() })
       .subscribe({
-        next: (res: any[]) => (this.pedidos = res),
-        error: (err: any) => console.error('❌ Error al cargar pedidos:', err)
-      });
-  }
-
-  actualizarEstado(id: string, estado: string): void {
-    this.http
-      .patch(
-        `${this.API_URL}/${id}/estado`,
-        { estado },
-        { headers: this.headers() }
-      )
-      .subscribe({
-        next: () => this.cargarPedidos(),
-        error: (err: any) => console.error('❌ Error al actualizar estado:', err)
+        next: res => this.pedidos = res,
+        error: err => console.error('❌ Error al cargar pedidos:', err)
       });
   }
 
   cargarHilos(): void {
     this.chat.obtenerHilos().subscribe({
-      next: (h: any) => (this.hilos = h),
-      error: (err: any) => console.error('❌ Error al cargar hilos:', err)
+      next: (h: any[]) => {
+        this.hilos = h;
+
+        const nuevos = h.filter(hilo => hilo.sinLeer > 0 && this.selectedUid !== hilo.usuarioId);
+
+      },
+      error: err => console.error('❌ Error al cargar hilos:', err)
     });
   }
+
+  private cargarMensajesDelHilo(): void {
+    if (!this.selectedUid) return;
+    this.chat.obtenerHiloPorUsuario(this.selectedUid).subscribe(
+      (res: any[]) => {
+        this.mensajes = res;
+        this.scrollAbajo();
+      },
+      (err: any) => console.error('❌ Error al obtener mensajes:', err)
+    );
+
+
+  }
+
+  // --------------------------
+  // INTERACCIÓN
+  // --------------------------
 
   seleccionar(uid: string, nombre: string): void {
     if (this.selectedUid === uid) return;
     this.selectedUid = uid;
     this.selectedNombre = nombre;
     this.cargarMensajesDelHilo();
-  }
-
-  private cargarMensajesDelHilo(): void {
-    if (!this.selectedUid) {
-      this.mensajes = [];
-      return;
-    }
-
-    this.chat.obtenerHiloPorUsuario(this.selectedUid).subscribe({
-      next: (m: any) => {
-        this.mensajes = m;
-        this.scrollAbajo();
-      },
-      error: (err: any) => console.error('❌ Error al obtener mensajes:', err)
-    });
+    this.pedidoSeleccionado = null;
   }
 
   enviarMensaje(): void {
@@ -111,8 +108,25 @@ export class ChatCocinaComponent implements OnInit {
         this.mensajeNuevo = '';
         this.cargarMensajesDelHilo();
       },
-      error: (err: any) => console.error('❌ Error al enviar mensaje:', err)
+      error: err => console.error('❌ Error al enviar mensaje:', err)
     });
+  }
+
+  actualizarEstado(id: string, estado: string): void {
+    this.http.patch(`${this.API_URL}/${id}/estado`, { estado }, { headers: this.headers() })
+      .subscribe({
+        next: () => this.cargarPedidos(),
+        error: err => console.error('❌ Error al actualizar estado:', err)
+      });
+  }
+
+  verPedido(): void {
+    const pedido = this.pedidos.find(p => p.usuario?._id === this.selectedUid);
+    this.pedidoSeleccionado = pedido || null;
+  }
+
+  cerrarDetalle(): void {
+    this.pedidoSeleccionado = null;
   }
 
   private scrollAbajo(): void {

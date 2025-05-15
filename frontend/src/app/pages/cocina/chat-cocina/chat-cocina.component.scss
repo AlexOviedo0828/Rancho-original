@@ -1,46 +1,47 @@
-/* CONTENEDOR PRINCIPAL */
 .chat-dashboard {
-  background: #f2f4f8;
+  background-color: #121212;
+  color: #fff;
 }
 
-/* LISTA DE HILOS */
 .hilo-list {
   max-height: 70vh;
   overflow-y: auto;
 
   li {
     cursor: pointer;
+    background-color: #1f1f1f;
+    border-bottom: 1px solid #333;
+    color: #fff;
 
     &.active {
-      background: #198754;
-      color: #fff;
+      background: #ffc107;
+      color: #000;
 
       .text-muted {
-        color: #e2e3e5 !important;
+        color: #222 !important;
       }
     }
+
     &:hover:not(.active) {
-      background: #f1f1f1;
+      background: #2a2a2a;
     }
   }
 }
 
-/* CUADRO DE CHAT */
 .chat-box {
+  background: #1a1a1a;
   overflow-y: auto;
-  background: #fafafa;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid #333;
 }
 
-/* BURBUJAS */
 .bubble {
   display: inline-block;
-  padding: .55rem .9rem;
-  border-radius: 16px;
+  padding: 0.55rem 0.9rem;
+  border-radius: 1rem;
   max-width: 80%;
   word-wrap: break-word;
   position: relative;
-  font-size: .95rem;
+  font-size: 0.95rem;
 }
 
 .bubble-cocina {
@@ -55,16 +56,16 @@
   margin-right: auto;
 }
 
-/* TIMESTAMP */
 .timestamp {
-  font-size: .75rem;
-  color: #666;
-  margin-top: .25rem;
+  font-size: 0.75rem;
+  color: #ccc;
+  margin-top: 0.25rem;
   text-align: right;
 }
-
-/* TABLA DE PEDIDOS */
-table {
-  th, td { white-space: nowrap; }
-  tbody tr:hover { background: #f7f7f7; }
+::ng-deep .snackbar-warning {
+  background-color: #ffc107;
+  color: #000;
+  font-weight: bold;
 }
+
+
