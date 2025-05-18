@@ -18,7 +18,7 @@ exports.crearRol = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
-// GET /api/roles/usuario
+
 exports.obtenerRolPorNombre = async (req, res) => {
   try {
     const rol = await Rol.findOne({ nombre: req.params.nombre });

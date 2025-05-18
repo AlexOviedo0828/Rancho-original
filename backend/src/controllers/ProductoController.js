@@ -1,6 +1,6 @@
 const Producto = require('../models/Producto');
 
-// Listar (solo activos)
+
 exports.getAll = async (req, res) => {
   try {
     const productos = await Producto.find({ activo: true });
@@ -10,12 +10,12 @@ exports.getAll = async (req, res) => {
   }
 };
 
-// Crear producto
+
 exports.crearProducto = async (req, res) => {
   try {
     const { nombre, descripcion, precio, categoria } = req.body;
 
-    // ⚠️  Sin “/” inicial para evitar //uploads/
+    
     const imagen = req.file ? `uploads/${req.file.filename}` : '';
 
     const producto = new Producto({
@@ -33,7 +33,7 @@ exports.crearProducto = async (req, res) => {
   }
 };
 
-// Actualizar producto
+
 exports.actualizarProducto = async (req, res) => {
   try {
     const actualizacion = {
@@ -45,7 +45,7 @@ exports.actualizarProducto = async (req, res) => {
     };
 
     if (req.file) {
-      actualizacion.imagen = `uploads/${req.file.filename}`; // misma corrección
+      actualizacion.imagen = `uploads/${req.file.filename}`; 
     }
 
     const producto = await Producto.findByIdAndUpdate(
@@ -60,7 +60,7 @@ exports.actualizarProducto = async (req, res) => {
   }
 };
 
-// Eliminar
+
 exports.eliminarProducto = async (req, res) => {
   try {
     await Producto.findByIdAndDelete(req.params.id);
@@ -70,7 +70,7 @@ exports.eliminarProducto = async (req, res) => {
   }
 };
 
-// Obtener por ID
+
 exports.getProductoPorId = async (req, res) => {
   try {
     const producto = await Producto.findById(req.params.id);

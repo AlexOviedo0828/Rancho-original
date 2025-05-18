@@ -5,19 +5,19 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Registro de usuario
+
 exports.registrar = async (req, res) => {
   try {
     const { nombre_completo, correo, contraseña, rol } = req.body;
 
-    // Validar si el correo ya existe
+  
     const existeUsuario = await Usuario.findOne({ correo });
     if (existeUsuario) return res.status(400).json({ mensaje: 'Correo ya registrado' });
 
-    // Encriptar contraseña
+    
     const contraseñaHash = await bcrypt.hash(contraseña, 10);
 
-    // Crear nuevo usuario
+    
     const nuevoUsuario = new Usuario({
       nombre_completo,
       correo,
@@ -33,20 +33,20 @@ exports.registrar = async (req, res) => {
   }
 };
 
-// Login de usuario
+
 exports.login = async (req, res) => {
   try {
     const { correo, contraseña } = req.body;
 
-    // Buscar usuario
+    
     const usuario = await Usuario.findOne({ correo }).populate('rol');
     if (!usuario) return res.status(400).json({ mensaje: 'Correo no registrado' });
 
-    // Comparar contraseña
+    
     const esValida = await bcrypt.compare(contraseña, usuario.contraseña);
     if (!esValida) return res.status(400).json({ mensaje: 'Contraseña incorrecta' });
 
-    // Generar token
+    
     const token = jwt.sign(
       { id: usuario._id, rol: usuario.rol.nombre },
       JWT_SECRET,

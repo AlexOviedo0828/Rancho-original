@@ -55,9 +55,21 @@ exports.descargarBoleta = async (req, res) => {
     const boleta = await Boleta.findById(req.params.id).populate('pedido');
     if (!boleta) return res.status(404).json({ mensaje: 'Boleta no encontrada' });
 
-    const pedido = await Pedido.findById(boleta.pedido._id).populate('usuario mesa');
+    const pedido = await Pedido.findById(boleta.pedido._id)
+      .populate('usuario')
+      .populate('mesa')
+      .populate({
+        path: 'reserva',
+        populate: {
+          path: 'mesa',
+          select: 'numero sector'
+        }
+      });
+
     const usuario = pedido.usuario;
     const mesa = pedido.mesa;
+    const sector = pedido.reserva?.mesa?.sector || mesa?.sector || 'No definido';
+
     const detalles = await Detalle.find({ pedido: pedido._id }).populate('producto');
 
     const doc = new PDFDocument({ margin: 50 });
@@ -67,24 +79,30 @@ exports.descargarBoleta = async (req, res) => {
     const stream = fs.createWriteStream(rutaArchivo);
     doc.pipe(stream);
 
-    doc.font('Helvetica').fontSize(20).text('Boleta de Compra - El Rancho', { align: 'center' }).moveDown();
+    doc.font('Helvetica-Bold').fontSize(20).text('Boleta de Compra - El Rancho', { align: 'center' }).moveDown();
 
-    doc.fontSize(12).text(`Cliente: ${usuario.nombre_completo}`);
-    doc.text(`Correo: ${usuario.correo}`);
-
-    if (mesa) {
-      doc.text(`Mesa: ${mesa.numero} - Sector: ${mesa.sector || 'No definido'}`);
-    }
-
+   
+    doc.font('Helvetica').fontSize(12).text(`Cliente: ${usuario?.nombre_completo || '—'}`);
+    doc.text(`Correo: ${usuario?.correo || '—'}`);
+    doc.text(`Mesa: ${mesa?.numero || '—'} - Sector: ${sector}`);
     doc.text(`Fecha Pedido: ${new Date(pedido.fecha).toLocaleString()}`);
     doc.moveDown();
 
-    doc.fontSize(14).text('Detalle de Productos:', { underline: true }).moveDown(0.5);
-    detalles.forEach((item, index) => {
-      const subtotal = item.producto.precio * item.cantidad;
-      doc.fontSize(12).text(`${index + 1}. ${item.producto.nombre} - Cantidad: ${item.cantidad} - Subtotal: $${subtotal}`);
-    });
+    
+    doc.font('Helvetica-Bold').fontSize(14).text('Detalle de Productos:', { underline: true }).moveDown(0.5);
 
+    if (detalles.length === 0) {
+      doc.font('Helvetica-Oblique').fontSize(12).text('No se encontraron productos.');
+    } else {
+      detalles.forEach((item, i) => {
+        const nombre = item.producto?.nombre || 'Producto eliminado';
+        const precio = item.producto?.precio || 0;
+        const subtotal = item.cantidad * precio;
+        doc.font('Helvetica').fontSize(12).text(`${i + 1}. ${nombre} - Cantidad: ${item.cantidad} - Subtotal: $${subtotal}`);
+      });
+    }
+
+   
     doc.moveDown();
     doc.fontSize(12).text(`Total Neto: $${boleta.total_neto}`);
     doc.text(`IVA (19%): $${boleta.iva}`);
@@ -97,13 +115,16 @@ exports.descargarBoleta = async (req, res) => {
     });
 
   } catch (err) {
+    console.error('❌ Error al generar boleta:', err);
     res.status(500).json({ error: err.message });
   }
 };
+
+
 exports.getBoletaPorId = async (req, res) => {
   const { id } = req.params;
 
-  // ① validar ObjectId
+  
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ mensaje: 'ID de boleta inválido' });
   }

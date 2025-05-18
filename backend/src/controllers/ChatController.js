@@ -1,10 +1,9 @@
 const { Types }   = require('mongoose');
 const Mensaje     = require('../models/Mensaje');
 
-/* ================= CREAR MENSAJE ================= */
 async function crearMensaje (req, res) {
   try {
-    /* si el middleware no adjuntó el usuario → 401 */
+    
     if (!req.usuario) {
       return res.status(401).json({ mensaje: 'Token faltante o inválido' });
     }
@@ -14,20 +13,20 @@ async function crearMensaje (req, res) {
 
     const _mensaje   = (mensaje || '').trim();
     const _rol       = (rol || tRol || '').trim();
-    const _emisor    = emisor    || tId;          // SIEMPRE hay emisor
-    let   _usuarioId = usuarioId || tId;          // dueño del hilo
+    const _emisor    = emisor    || tId;          
+    let   _usuarioId = usuarioId || tId;         
 
-    /* cocina debe indicar a qué cliente escribe */
+   
     if (_rol === 'cocina' && !usuarioId) {
       return res.status(400).json({ mensaje: 'Falta usuarioId para cocina' });
     }
 
-    /* validaciones mínimas */
+    
     if (!_mensaje || !_rol || !_emisor || !_usuarioId) {
       return res.status(400).json({ mensaje: '❌ Faltan campos obligatorios' });
     }
 
-    /* aseguramos que sean ObjectId válidos */
+    
     if (!Types.ObjectId.isValid(_emisor) || !Types.ObjectId.isValid(_usuarioId)) {
       return res.status(400).json({ mensaje: 'IDs inválidos' });
     }
@@ -47,7 +46,7 @@ async function crearMensaje (req, res) {
   }
 }
 
-/* ============ OBTENER MENSAJES (usuario / cocina) ============ */
+
 async function getMensajes (req, res) {
   try {
     if (!req.usuario) {
@@ -69,7 +68,7 @@ async function getMensajes (req, res) {
   }
 }
 
-/* ============ RESPONDER MENSAJE ============ */
+
 async function responderMensaje (req, res) {
   try {
     const { id } = req.params;
@@ -87,7 +86,7 @@ async function responderMensaje (req, res) {
   }
 }
 
-/* ============ BORRAR MENSAJES de un usuario (logout) ============ */
+
 async function borrarMensajesUsuario (req, res) {
   try {
     if (!req.usuario) return res.status(401).json({ mensaje: 'Token inválido' });
@@ -99,7 +98,7 @@ async function borrarMensajesUsuario (req, res) {
   }
 }
 
-/* ============ LISTA DE HILOS (solo cocina/admin) ============ */
+
 async function getHilos (req, res) {
   try {
     if (!req.usuario || !['cocina', 'admin'].includes(req.usuario.rol)) {
@@ -150,7 +149,7 @@ async function getHilos (req, res) {
   }
 }
 
-/* ============ MENSAJES DE UN HILO ESPECÍFICO ============ */
+
 async function getHiloPorUsuario (req, res) {
   try {
     if (!req.usuario) return res.status(401).json({ mensaje: 'Token inválido' });
@@ -177,7 +176,7 @@ async function getHiloPorUsuario (req, res) {
   }
 }
 
-/* -------------------------------------------------- */
+
 module.exports = {
   crearMensaje,
   getMensajes,

@@ -3,6 +3,11 @@
   color: #fff;
 }
 
+.pedidos-wrapper {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
 .hilo-list {
   max-height: 70vh;
   overflow-y: auto;
@@ -32,6 +37,9 @@
   background: #1a1a1a;
   overflow-y: auto;
   border-top: 1px solid #333;
+  flex-grow: 1;
+  min-height: 300px;
+  max-height: 70vh;
 }
 
 .bubble {
@@ -62,10 +70,35 @@
   margin-top: 0.25rem;
   text-align: right;
 }
-::ng-deep .snackbar-warning {
+
+::ng-deep .mat-snack-bar-warning {
   background-color: #ffc107;
   color: #000;
   font-weight: bold;
 }
 
+/* Colores por estado */
+.estado-recibido {
+  background-color: #2c2c2c !important;
+  color: #fff !important;
+}
 
+.estado-preparacion {
+  background-color: #fff3cd !important;
+  color: #000 !important;
+}
+
+.estado-en-camino {
+  background-color: #d1ecf1 !important;
+  color: #0c5460 !important;
+}
+
+.estado-entregado {
+  background-color: #d4edda !important;
+  color: #155724 !important;
+}
+
+.estado-finalizado {
+  background-color: #f8d7da !important;
+  color: #721c24 !important;
+}

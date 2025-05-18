@@ -30,10 +30,10 @@ exports.crearPedido = async (req, res) => {
       return res.status(400).json({ mensaje: '❌ Datos incompletos para crear el pedido con reserva' });
     }
 
-    // Generar número de reserva único
+    
     const numeroReserva = await generarContador('reserva');
 
-    // Crear reserva automáticamente
+   
     const nuevaReserva = new Reserva({
       usuario,
       mesa,
@@ -45,10 +45,10 @@ exports.crearPedido = async (req, res) => {
 
     const reservaGuardada = await nuevaReserva.save();
 
-    // Generar contador de pedido
+    
     const numeroPedido = await generarContador('pedido');
 
-    // Crear el pedido con el ID de la reserva
+    
     const pedido = new Pedido({
       usuario,
       mesa,
@@ -87,7 +87,7 @@ exports.crearPedido = async (req, res) => {
   }
 };
 
-// Obtener todos los pedidos
+
 exports.getPedidos = async (req, res) => {
   try {
     const pedidos = await Pedido.find()
@@ -98,7 +98,7 @@ exports.getPedidos = async (req, res) => {
       })
       .populate({
         path: 'reserva',
-        select: 'numero_reserva', // ← AÑADIDO
+        select: 'numero_reserva', 
         populate: {
           path: 'mesa',
           select: 'numero ubicacion capacidad'
@@ -113,7 +113,7 @@ exports.getPedidos = async (req, res) => {
   }
 };
 
-// Actualizar pedido agregando una reserva (ejemplo)
+
 exports.actualizarPedidoConReserva = async (req, res) => {
   try {
     const { id } = req.params;

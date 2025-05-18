@@ -1,4 +1,4 @@
-// Middleware para permitir acceso según el rol
+
 exports.permitirRoles = (...rolesPermitidos) => {
     return (req, res, next) => {
       const rolUsuario = req.usuario?.rol;

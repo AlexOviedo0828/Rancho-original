@@ -1,7 +1,7 @@
 const PedidoReserva = require('../models/PedidoReserva');
 const Contador = require('../models/Contador');
 
-// 🔢 Función para generar el siguiente número único
+
 const obtenerSiguienteContador = async (nombre) => {
   const contador = await Contador.findOneAndUpdate(
     { nombre },
@@ -24,12 +24,12 @@ exports.crearPedidoReserva = async (req, res) => {
       detalle_entrega
     } = req.body;
 
-    // Validación mínima
+    
     if (!usuario || !mesa || !productos || !fecha_reserva || !duracion) {
       return res.status(400).json({ mensaje: 'Datos incompletos para crear el pedido con reserva' });
     }
 
-    // Generar número de pedido y número de reserva
+   
     const contador_pedido = await obtenerSiguienteContador('pedido');
     const numero_reserva = await obtenerSiguienteContador('reserva');
 

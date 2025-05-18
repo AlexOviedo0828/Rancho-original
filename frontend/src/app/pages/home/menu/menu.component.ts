@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConfirmarDialogComponent } from 'src/app/dialogs/confirmar-dialog/confirmar-dialog.component';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
+import { ConfirmarDialogComponent } from 'src/app/dialogs/confirmar-dialog/confirmar-dialog.component';
 
 @Component({
   selector: 'app-menu',
@@ -27,9 +26,8 @@ export class MenuComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -44,12 +42,12 @@ export class MenuComponent implements OnInit {
         this.categorias = Array.from(map, ([nombre, productos]) => ({ nombre, productos }));
         this.categoriaActual = this.categorias[0];
       },
-      error: () => alert('Error al cargar productos')
+      error: () => alert('❌ Error al cargar productos')
     });
 
     this.http.get<any[]>(`${environment.apiUrl}/mesas`).subscribe({
       next: (mesas) => this.mesas = mesas,
-      error: () => alert('Error al cargar mesas')
+      error: () => alert('❌ Error al cargar mesas')
     });
   }
 
@@ -99,21 +97,17 @@ export class MenuComponent implements OnInit {
   getTotal(): number {
     return this.neto + this.iva;
   }
+
   getImgUrl(nombre: string): string {
     if (!nombre) return '../../../../assets/img/Diseño sin título.jpg';
-
-    if (nombre.startsWith('/')) nombre = nombre.slice(1); // Quita barra inicial
+    if (nombre.startsWith('/')) nombre = nombre.slice(1);
     if (!nombre.startsWith('uploads')) nombre = 'uploads/' + nombre;
-
-    // Usa el host sin `/api`
     const baseUrl = environment.apiUrl.replace('/api', '');
     return `${baseUrl}/${nombre}`;
   }
 
-
-
   agregarEntrega() {
-    if (this.nuevaEntrega.descripcion && this.nuevaEntrega.tiempo > 0) {
+    if (this.nuevaEntrega.descripcion.trim() !== '' && this.nuevaEntrega.tiempo > 0) {
       this.entregas.push({ ...this.nuevaEntrega });
       this.nuevaEntrega = { descripcion: '', tiempo: 0 };
     }
@@ -121,49 +115,47 @@ export class MenuComponent implements OnInit {
 
   confirmarPedido() {
     if (!this.mesaSeleccionadaId || !this.fechaElegida || !this.duracionSeleccionada || this.carrito.length === 0) {
-      this.snackBar.open('⚠️ Completa todos los campos y agrega productos.', 'Cerrar', { duration: 3000 });
+      alert('⚠️ Completa todos los campos y agrega productos.');
       return;
     }
 
     const dialogRef = this.dialog.open(ConfirmarDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) this.enviarPedido();
+    });
+  }
 
-    dialogRef.afterClosed().subscribe(confirmado => {
-      if (confirmado) {
-        const usuarioGuardado = localStorage.getItem('usuario');
-        if (!usuarioGuardado) return alert('Usuario no autenticado.');
+  enviarPedido() {
+    const usuarioGuardado = localStorage.getItem('usuario');
+    if (!usuarioGuardado) return;
 
-        const usuario = JSON.parse(usuarioGuardado)._id;
-        const datosCompletos = {
-          usuario,
-          mesa: this.mesaSeleccionadaId,
-          productos: this.carrito.map(i => ({
-            producto: i.producto._id,
-            cantidad: i.cantidad,
-            precio_unitario: i.producto.precio
-          })),
-          total: this.getTotal(),
-          metodo_pago: 'efectivo',
-          fecha_reserva: this.fechaElegida,
-          duracion: this.duracionSeleccionada,
-          detalle_entrega: this.entregas
-        };
+    const usuario = JSON.parse(usuarioGuardado)._id;
 
-        const token = localStorage.getItem('token') || '';
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const datosCompletos = {
+      usuario,
+      mesa: this.mesaSeleccionadaId,
+      productos: this.carrito.map(i => ({
+        producto: i.producto._id,
+        cantidad: i.cantidad,
+        precio_unitario: i.producto.precio
+      })),
+      total: this.getTotal(),
+      metodo_pago: 'efectivo',
+      fecha_reserva: this.fechaElegida,
+      duracion: this.duracionSeleccionada,
+      detalle_entrega: this.entregas
+    };
 
-        this.http.post<any>(`${environment.apiUrl}/pedidos`, datosCompletos, { headers }).subscribe({
-          next: (pedido) => {
-            this.generarBoleta(pedido._id);
-            this.vaciar();
-            this.mostrarCarrito = false;
-            this.snackBar.open('✅ Pedido enviado correctamente', 'Cerrar', { duration: 3000 });
-          },
-          error: (err) => {
-            console.error(err);
-            this.snackBar.open('❌ Error al enviar el pedido', 'Cerrar', { duration: 3000 });
-          }
-        });
-      }
+    const token = localStorage.getItem('token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.post<any>(`${environment.apiUrl}/pedidos`, datosCompletos, { headers }).subscribe({
+      next: (pedido) => {
+        this.generarBoleta(pedido._id);
+        this.vaciar();
+        this.mostrarCarrito = false;
+      },
+      error: () => console.error('❌ Error al enviar el pedido')
     });
   }
 
@@ -179,7 +171,7 @@ export class MenuComponent implements OnInit {
         this.boletaGenerada = boleta;
         this.descargarBoleta();
       },
-      error: (err) => console.error('Error al generar boleta', err)
+      error: () => console.error('❌ Error al generar la boleta')
     });
   }
 

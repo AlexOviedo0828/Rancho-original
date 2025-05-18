@@ -1,6 +1,6 @@
 const Mesa = require('../models/Mesa');
 
-/* GET /api/mesas  ─ listar todas */
+
 exports.getMesas = async (req, res) => {
   try {
     const mesas = await Mesa.find();
@@ -17,7 +17,7 @@ exports.getMesasDisponibles = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al obtener mesas disponibles' });
   }
 };
-/* POST /api/mesas ─ crear una mesa */
+
 exports.crearMesa = async (req, res) => {
   try {
     const { numero, capacidad, estado, ubicacion } = req.body;
@@ -29,7 +29,7 @@ exports.crearMesa = async (req, res) => {
   }
 };
 
-/* PUT /api/mesas/:id ─ actualizar una mesa */
+
 exports.actualizarMesa = async (req, res) => {
   try {
     const { id } = req.params;
@@ -41,7 +41,7 @@ exports.actualizarMesa = async (req, res) => {
   }
 };
 
-/* DELETE /api/mesas/:id ─ eliminar una mesa */
+
 exports.eliminarMesa = async (req, res) => {
   try {
     const { id } = req.params;

@@ -1,4 +1,4 @@
-/* ──────────── controllers/UsuarioController.js ──────────── */
+
 const Usuario  = require('../models/Usuario');
 const Rol      = require('../models/Rol');
 const bcrypt   = require('bcrypt');
@@ -22,7 +22,7 @@ exports.login = async (req, res) => {
       .select('+contrasena')
       .populate('rol');
 
-    console.log('👤 Usuario encontrado:', usuario);
+    console.log(' Usuario encontrado:', usuario);
 
     if (!usuario) {
       return res.status(400).json({ mensaje: 'Correo no registrado' });
@@ -41,10 +41,15 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: usuario._id, rol: usuario.rol.nombre },
+      {
+        _id: usuario._id, // Usa _id en lugar de id
+        rol: usuario.rol.nombre,
+        nombre_completo: usuario.nombre_completo
+      },
       JWT_SECRET,
       { expiresIn: '8h' }
     );
+    
 
     console.log('✅ Token generado');
     res.json({ token, usuario: { _id: usuario._id, rol: usuario.rol.nombre } });
@@ -55,24 +60,24 @@ exports.login = async (req, res) => {
   }
 };
 
-/* ---------- REGISTRO ---------- */
+
 exports.crearUsuario = async (req, res) => {
   try {
     let { nombre_completo, correo, contrasena, contraseña, rol } = req.body;
     const passwordPlain = contrasena ?? contraseña;
     if (!passwordPlain) return res.status(400).json({ mensaje: 'La contraseña es obligatoria' });
 
-    /* 1. Obtener ObjectId del rol si llega el nombre */
+  
     if (typeof rol === 'string' && !rol.match(/^[0-9a-fA-F]{24}$/)) {
       const rolDoc = await Rol.findOne({ nombre: rol });
       if (!rolDoc) return res.status(400).json({ mensaje: 'Rol no válido' });
       rol = rolDoc._id;
     }
 
-    /* 2. Hash de contraseña */
+   
     const hash = await bcrypt.hash(passwordPlain, 10);
 
-    /* 3. Crear usuario */
+    
     const nuevoUsuario = new Usuario({
       nombre_completo,
       correo,
@@ -88,7 +93,7 @@ exports.crearUsuario = async (req, res) => {
   }
 };
 
-/* ---------- CRUD protegido ---------- */
+
 exports.getUsuarios = async (_req, res) => {
   try {
     const usuarios = await Usuario.find().populate('rol');
@@ -142,11 +147,11 @@ exports.crearDesdeAdmin = async (req, res) => {
       return res.status(400).json({ mensaje: 'Campos incompletos' });
     }
 
-    // Verifica si ya existe
+   
     const existe = await Usuario.findOne({ correo });
     if (existe) return res.status(409).json({ mensaje: 'Correo ya registrado' });
 
-    // Si el rol viene como string, buscar el ObjectId en la colección Rol
+  
     let rolFinal = rol;
     if (typeof rol === 'string' && !rol.match(/^[0-9a-fA-F]{24}$/)) {
       const rolDoc = await Rol.findOne({ nombre: rol });
@@ -154,10 +159,10 @@ exports.crearDesdeAdmin = async (req, res) => {
       rolFinal = rolDoc._id;
     }
 
-    // Encriptar contraseña
+    
     const hash = await bcrypt.hash(password, 10);
 
-    // Crear nuevo usuario
+   
     const nuevoUsuario = new Usuario({
       nombre_completo,
       correo,
@@ -182,7 +187,7 @@ exports.registrar = async (req, res) => {
     const nuevo = new Usuario({
       nombre_completo,
       correo,
-      contrasena: hash, // Asegúrate de guardar el hash aquí
+      contrasena: hash, 
     });
 
     await nuevo.save();

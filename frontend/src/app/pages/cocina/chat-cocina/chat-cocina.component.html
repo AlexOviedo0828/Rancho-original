@@ -1,20 +1,12 @@
-<!-- CONTENEDOR GENERAL -->
 <div class="chat-dashboard container-fluid py-4">
   <div class="row g-4">
 
     <!-- 📦 PEDIDOS -->
-    <section class="col-lg-4 col-md-6">
+    <section class="col-12 col-lg-6 order-1 order-lg-1">
       <article class="card bg-dark text-white shadow-sm h-100 border-0 rounded-4">
         <header class="card-header bg-warning text-dark fw-bold rounded-top-4">
           📦 Pedidos realizados
         </header>
-
-        <!-- Botón para ver el pedido -->
-        <div *ngIf="selectedUid && !pedidoSeleccionado" class="text-end px-3 pt-2">
-          <button class="btn btn-outline-warning btn-sm fw-bold" (click)="verPedido()">
-            🔍 Ver Pedido
-          </button>
-        </div>
 
         <!-- Detalle del pedido -->
         <div *ngIf="pedidoSeleccionado" class="px-3 pb-3">
@@ -27,7 +19,7 @@
             <p class="mb-1"><strong>📅 Reserva N°:</strong> {{ pedidoSeleccionado.reserva?.numero_reserva }}</p>
             <p class="mb-1"><strong>🚚 Estado:</strong> {{ pedidoSeleccionado.estado }}</p>
             <p class="mb-1"><strong>⏱ Fecha:</strong> {{ pedidoSeleccionado.fecha | date:'short' }}</p>
-            <p class="mb-2"><strong>💵 Total:</strong> ${{ pedidoSeleccionado.total | number:'1.0-0' }}</p>
+
 
             <div>
               <strong>🍔 Productos:</strong>
@@ -44,8 +36,8 @@
           </div>
         </div>
 
-        <!-- Tabla de pedidos -->
-        <div class="table-responsive mt-3">
+
+        <div class="table-responsive mt-3 pedidos-wrapper">
           <table class="table table-dark table-hover align-middle text-center mb-0">
             <thead class="table-warning text-dark sticky-top">
               <tr>
@@ -55,29 +47,48 @@
                 <th>Reserva</th>
                 <th>Total</th>
                 <th>Fecha</th>
+                <th>Tiempo</th>
                 <th>Estado</th>
                 <th>Acción</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let p of pedidos; index as i">
+              <tr *ngFor="let p of pedidos; index as i"
+                  [ngClass]="{
+                    'estado-recibido': p.estado === 'recibido',
+                    'estado-preparacion': p.estado === 'en preparacion',
+                    'estado-entregado': p.estado === 'entregado',
+                    'estado-en-camino': p.estado === 'en camino',
+                    'estado-finalizado': p.estado === 'finalizado'
+                  }">
                 <td>{{ i + 1 }}</td>
                 <td>{{ p.usuario?.nombre_completo || '-' }}</td>
                 <td>{{ p.mesa?.numero || '-' }}</td>
                 <td>🪑 Nº {{ p.reserva?.numero_reserva || '-' }}</td>
                 <td>${{ p.total | number:'1.0-0' }}</td>
                 <td>{{ p.fecha_reserva | date:'short' }}</td>
+                <td>⏳ {{ contadores[p.reserva?._id || p._id] || '—' }}</td>
                 <td><span class="badge bg-info text-dark">{{ p.estado }}</span></td>
                 <td>
                   <select class="form-select form-select-sm mb-1" [(ngModel)]="p.estado">
-                    <option>En proceso</option>
-                    <option>En camino</option>
-                    <option>Entregado</option>
+                    <option>recibido</option>
+                    <option>en preparacion</option>
+                    <option>en camino</option>
+                    <option>entregado</option>
+                    <option>finalizado</option>
                   </select>
-                  <button class="btn btn-sm btn-success w-100"
-                          (click)="actualizarEstado(p._id, p.estado)">
+                  <button class="btn btn-sm btn-success w-100 mb-1" (click)="actualizarEstado(p._id, p.estado)">
                     Actualizar
                   </button>
+                  <button class="btn btn-sm btn-outline-warning w-100"
+                          (click)="seleccionar(p.usuario?._id, p.usuario?.nombre_completo); verPedido()">
+                    🔍 Ver Pedido
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger w-100"
+        (click)="eliminarPedido(p._id)">
+  🗑 Eliminar
+</button>
+
                 </td>
               </tr>
             </tbody>
@@ -87,7 +98,7 @@
     </section>
 
     <!-- 👥 CLIENTES -->
-    <section class="col-lg-3 col-md-6">
+    <section class="col-12 col-lg-3 order-3 order-lg-2">
       <article class="card shadow-sm h-100 bg-dark text-white border-0 rounded-4">
         <header class="card-header bg-warning text-dark text-center fw-bold rounded-top-4">
           👥 Clientes
@@ -106,21 +117,21 @@
             </div>
             <span *ngIf="h.sinLeer > 0"
               class="badge rounded-pill bg-danger align-self-center ms-2">
-          {{ h.sinLeer }}
-        </span>
+              {{ h.sinLeer }}
+            </span>
           </li>
         </ul>
       </article>
     </section>
 
     <!-- 💬 CHAT -->
-    <section class="col-lg-5">
+    <section class="col-12 col-lg-3 order-2 order-lg-3">
       <article class="card bg-dark text-white shadow-sm h-100 d-flex flex-column border-0 rounded-4">
 
- <!-- Cabecera -->
- <header *ngIf="selectedUid" class="card-header bg-success text-white fw-bold rounded-top-4">
-  💬 Conversación con {{ selectedNombre }}
-</header>
+        <!-- Cabecera -->
+        <header *ngIf="selectedUid" class="card-header bg-success text-white fw-bold rounded-top-4">
+          💬 Conversación con {{ selectedNombre }}
+        </header>
 
         <!-- Mensajes -->
         <div *ngIf="selectedUid"

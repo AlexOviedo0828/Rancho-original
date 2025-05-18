@@ -1,31 +1,48 @@
 ::ng-deep .mat-dialog-container {
-  background: #fff;
-  border-radius: 15px;
-  padding: 30px 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  background-color: #1e1e1e; // Fondo oscuro
+  color: #f1f1f1;
+  border: 2px solid #ffc107;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
   text-align: center;
 }
 
-::ng-deep mat-dialog-content {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 20px;
+/* Título del diálogo */
+::ng-deep mat-dialog-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #ffc107;
+  margin-bottom: 12px;
 }
 
+/* Contenido del diálogo */
+::ng-deep mat-dialog-content {
+  font-size: 1.05rem;
+  color: #dddddd;
+  margin-bottom: 24px;
+  background:#1e1e1e; // ← Corrige el fondo morado
+  padding: 0;
+}
+
+/* Contenedor de los botones */
 ::ng-deep mat-dialog-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  justify-content: center;
+  gap: 16px;
 }
 
-::ng-deep button[mat-button] {
+/* Botones */
+::ng-deep button[mat-button],
+::ng-deep button[mat-raised-button] {
   border-radius: 8px;
+  padding: 8px 20px;
   font-weight: bold;
-  padding: 6px 18px;
+  font-size: 0.95rem;
   text-transform: none;
 }
 
+/* Botón Confirmar */
 ::ng-deep button[color="primary"] {
   background-color: #28a745;
   color: white;
@@ -35,6 +52,7 @@
   }
 }
 
+/* Botón Cancelar */
 ::ng-deep button[color="warn"] {
   background-color: #dc3545;
   color: white;
